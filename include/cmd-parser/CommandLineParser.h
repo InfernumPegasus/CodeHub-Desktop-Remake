@@ -19,47 +19,29 @@ namespace codehub::utils {
 
 class CommandKeywordValidator : public ValidatorBase<ParsedCommand> {
  public:
-  bool Validate(const ParsedCommand& command) override {
-    if (command.m_keyword.empty()) {
-      inferlib::Printer::Println(std::cerr,
-                                 "Validation failed: ParsedCommand keyword cannot be empty");
-      return false;
-    }
-
-    return !m_next || m_next->Validate(command);
-  }
+  bool Validate(const ParsedCommand& command) override;
 };
 
 class CommandFlagsValidator : public ValidatorBase<ParsedCommand> {
  public:
-  bool Validate(const ParsedCommand& command) override {
-    for (const auto& [flag, shouldHaveValue] : command.m_flags) {
-      if (flag.first.empty() || (shouldHaveValue && !flag.second.has_value()) ||
-          flag.first == "--") {
-        inferlib::Printer::Println(
-            std::cerr, "Validation failed: ParsedCommand flag or value cannot be empty");
-        return false;
-      }
-    }
-
-    return !m_next || m_next->Validate(command);
-  }
+  bool Validate(const ParsedCommand& command) override;
 };
 
 struct CommandLineParser {
   CommandLineParser();
 
-  auto Parse(std::optional<ParsedCommand> command);
+  void SetUp();
 
   std::optional<ParsedCommand> Parse(int argc, char* argv[]);
 
  private:
-  CommandArgsList ArgvToStringViews(int argc, char* argv[]);
+  static CommandArgsList ArgvToStringViews(int argc, char* argv[]);
 
-  CommandFlagsList ExtractFlagsWithArgs(const CommandArgsList& rawArgs);
+  static CommandFlagsList ExtractFlagsWithArgs(const CommandArgsList& rawArgs);
 
-  CommandArgsList ExtractSimpleArgs(const CommandArgsList& rawArgs);
+  static CommandArgsList ExtractSimpleArgs(const CommandArgsList& rawArgs);
 
+ private:
   std::shared_ptr<ValidatorBase<ParsedCommand>> m_validator;
 };
 

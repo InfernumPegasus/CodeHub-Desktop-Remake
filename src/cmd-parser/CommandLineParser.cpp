@@ -2,9 +2,18 @@
 
 codehub::utils::CommandLineParser::CommandLineParser() {
   m_validator = std::make_shared<CommandKeywordValidator>();
-  auto flagsValidator = std::make_shared<CommandFlagsValidator>();
 
-  m_validator->SetNext(flagsValidator);
+  SetUp();
+}
+
+void codehub::utils::CommandLineParser::SetUp() {
+  const auto setupValidators = [this]() {
+    auto flagsValidator = std::make_shared<CommandFlagsValidator>();
+
+    m_validator->SetNext(flagsValidator);
+  };
+
+  setupValidators();
 }
 
 std::optional<codehub::utils::ParsedCommand> codehub::utils::CommandLineParser::Parse(
@@ -62,4 +71,29 @@ codehub::utils::CommandArgsList codehub::utils::CommandLineParser::ExtractSimple
       rawArgs | std::views::drop(1), std::back_inserter(simpleArgs),
       [](const std::string_view& arg) { return !arg.starts_with("--"); });
   return simpleArgs;
+}
+
+bool codehub::utils::CommandKeywordValidator::Validate(
+    const codehub::utils::ParsedCommand& command) {
+  if (command.m_keyword.empty()) {
+    inferlib::Printer::Println(
+        std::cerr, "Validation failed: ParsedCommand keyword cannot be empty");
+    return false;
+  }
+
+  return !m_next || m_next->Validate(command);
+}
+
+bool codehub::utils::CommandFlagsValidator::Validate(
+    const codehub::utils::ParsedCommand& command) {
+  for (const auto& [flag, shouldHaveValue] : command.m_flags) {
+    if (flag.first.empty() || (shouldHaveValue && !flag.second.has_value()) ||
+        flag.first == "--") {
+      inferlib::Printer::Println(
+          std::cerr, "Validation failed: ParsedCommand flag or value cannot be empty");
+      return false;
+    }
+  }
+
+  return !m_next || m_next->Validate(command);
 }
