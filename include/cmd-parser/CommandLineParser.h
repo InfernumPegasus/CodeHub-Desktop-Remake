@@ -30,11 +30,11 @@ class CommandFlagsValidator : public ValidatorBase<ParsedCommand> {
 struct CommandLineParser {
   CommandLineParser();
 
-  void SetUp();
-
   std::optional<ParsedCommand> Parse(int argc, char* argv[]);
 
  private:
+  void SetUp();
+
   static CommandArgsList ArgvToStringViews(int argc, char* argv[]);
 
   static CommandFlagsList ExtractFlagsWithArgs(const CommandArgsList& rawArgs);

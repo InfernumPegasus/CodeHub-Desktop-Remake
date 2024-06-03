@@ -6,16 +6,6 @@ codehub::utils::CommandLineParser::CommandLineParser() {
   SetUp();
 }
 
-void codehub::utils::CommandLineParser::SetUp() {
-  const auto setupValidators = [this]() {
-    auto flagsValidator = std::make_shared<CommandFlagsValidator>();
-
-    m_validator->SetNext(flagsValidator);
-  };
-
-  setupValidators();
-}
-
 std::optional<codehub::utils::ParsedCommand> codehub::utils::CommandLineParser::Parse(
     int argc, char** argv) {
   const auto args = ArgvToStringViews(argc, argv);
@@ -31,6 +21,16 @@ std::optional<codehub::utils::ParsedCommand> codehub::utils::CommandLineParser::
   }
 
   return command;
+}
+
+void codehub::utils::CommandLineParser::SetUp() {
+  const auto setupValidators = [this]() {
+    auto flagsValidator = std::make_shared<CommandFlagsValidator>();
+
+    m_validator->SetNext(flagsValidator);
+  };
+
+  setupValidators();
 }
 
 codehub::utils::CommandArgsList codehub::utils::CommandLineParser::ArgvToStringViews(
