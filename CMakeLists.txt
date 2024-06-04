@@ -9,7 +9,10 @@ set(CMAKE_CXX_FLAGS "-Wall -pedantic -Wno-maybe-uninitialized -O3")
 #find_package(Boost COMPONENTS program_options REQUIRED)
 
 add_library(global
-        src/cmd-parser/Command.cpp
+        src/cmd-utils/ParsedCommand.cpp
+        src/cmd-utils/CommandLineParser.cpp
+        src/cmd-utils/CommandRegistry.cpp
+        src/cmd-utils/CommandExecutor.cpp
 
         main.cpp
 )
@@ -19,9 +22,6 @@ target_include_directories(global PRIVATE src)
 
 add_executable(
         ${PROJECT_NAME}
-
-        src/cmd-parser/CommandLineParser.cpp
-
         main.cpp
 )
 

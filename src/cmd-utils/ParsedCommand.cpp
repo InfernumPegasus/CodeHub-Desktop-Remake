@@ -1,4 +1,4 @@
-#include "cmd-parser/ParsedCommand.h"
+#include "cmd-utils/ParsedCommand.h"
 
 namespace codehub::utils {
 
@@ -12,7 +12,7 @@ std::ostream& operator<<(std::ostream& os, const ParsedCommand& command) {
     os << '\n';
   }
 
-  os << "\nSimple Arguments: ";
+  os << "Simple Arguments: ";
   for (const auto& arg : command.m_args) {
     os << arg << ' ';
   }

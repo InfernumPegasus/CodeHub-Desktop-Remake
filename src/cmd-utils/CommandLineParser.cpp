@@ -1,4 +1,4 @@
-#include "cmd-parser/CommandLineParser.h"
+#include "cmd-utils/CommandLineParser.h"
 
 codehub::utils::CommandLineParser::CommandLineParser() {
   m_validator = std::make_shared<CommandKeywordValidator>();
@@ -77,7 +77,7 @@ bool codehub::utils::CommandKeywordValidator::Validate(
     const codehub::utils::ParsedCommand& command) {
   if (command.m_keyword.empty()) {
     inferlib::Printer::Println(
-        std::cerr, "Validation failed: ParsedCommand keyword cannot be empty");
+        std::cerr, "Validation failed: command keyword cannot be empty");
     return false;
   }
 
@@ -90,7 +90,7 @@ bool codehub::utils::CommandFlagsValidator::Validate(
     if (flag.first.empty() || (shouldHaveValue && !flag.second.has_value()) ||
         flag.first == "--") {
       inferlib::Printer::Println(
-          std::cerr, "Validation failed: ParsedCommand flag or value cannot be empty");
+          std::cerr, "Validation failed: command flag or value cannot be empty");
       return false;
     }
   }

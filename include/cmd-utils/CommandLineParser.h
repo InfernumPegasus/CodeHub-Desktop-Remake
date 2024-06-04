@@ -12,8 +12,8 @@
 #include <vector>
 
 #include "ParsedCommand.h"
+#include "ValidatorBase.h"
 #include "lib/inferlib/Printer.h"
-#include "lib/inferlib/ValidatorBase.h"
 
 namespace codehub::utils {
 
