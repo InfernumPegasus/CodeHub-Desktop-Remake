@@ -14,7 +14,7 @@ std::optional<codehub::utils::ParsedCommand> codehub::utils::CommandLineParser::
   const CommandArgsList simpleArgsWithoutKeyword{simpleArgs.cbegin() + 1,
                                                  simpleArgs.cend()};
 
-  ParsedCommand command{simpleArgs.front(), flagsWithArgs, simpleArgsWithoutKeyword};
+  ParsedCommand command{args.at(1), flagsWithArgs, simpleArgsWithoutKeyword};
 
   if (!m_validator->Validate(command)) {
     return std::nullopt;
@@ -75,9 +75,9 @@ codehub::utils::CommandArgsList codehub::utils::CommandLineParser::ExtractSimple
 
 bool codehub::utils::CommandKeywordValidator::Validate(
     const codehub::utils::ParsedCommand& command) {
-  if (command.m_keyword.empty()) {
+  if (command.m_keyword.empty() || command.m_keyword.starts_with("--")) {
     inferlib::Printer::Println(
-        std::cerr, "Validation failed: command keyword cannot be empty");
+        std::cerr, "Validation failed: wrong command keyword format:", command.m_keyword);
     return false;
   }
 
@@ -90,7 +90,8 @@ bool codehub::utils::CommandFlagsValidator::Validate(
     if (flag.first.empty() || (shouldHaveValue && !flag.second.has_value()) ||
         flag.first == "--") {
       inferlib::Printer::Println(
-          std::cerr, "Validation failed: command flag or value cannot be empty");
+          std::cerr,
+          "Validation failed: command flag or value cannot be empty:", flag.first);
       return false;
     }
   }
