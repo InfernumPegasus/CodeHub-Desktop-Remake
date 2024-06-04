@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
             {"add", AddCommand()},
         }};
 
-    constexpr codehub::utils::CommandRegistry commandRegistry{{commands}};
+    constexpr CommandRegistry commandRegistry{{commands}};
 
     CommandExecutor executor(commandRegistry);
     executor.ExecuteCommand(command.value());
