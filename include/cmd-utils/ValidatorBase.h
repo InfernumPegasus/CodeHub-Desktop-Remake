@@ -6,7 +6,6 @@
 
 namespace codehub::utils {
 
-
 template <class T>
 class ValidatorBase {
  public:
@@ -19,4 +18,5 @@ class ValidatorBase {
  protected:
   std::shared_ptr<ValidatorBase> m_next;
 };
+
 }  // namespace codehub::utils

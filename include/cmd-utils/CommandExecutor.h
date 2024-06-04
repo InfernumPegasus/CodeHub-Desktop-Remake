@@ -1,16 +1,25 @@
 #pragma once
 
 #include <iostream>
+#include <variant>
 
-#include "CommandRegistry.h"
+#include "ICommand.h"
 #include "lib/inferlib/Printer.h"
+#include "utils/ConstexprMap.h"
+
+namespace codehub::utils {
+
+using CommandVariant = std::variant<HelpCommand, AddCommand>;
+using CommandRegistry = inferlib::ConstexprVariantMap<std::string_view, CommandVariant>;
 
 class CommandExecutor {
  public:
-  explicit CommandExecutor(codehub::utils::CommandRegistry& registry);
+  explicit CommandExecutor(const CommandRegistry& registry);
 
-  void ExecuteCommand(const codehub::utils::ParsedCommand& command);
+  void ExecuteCommand(const ParsedCommand& parsedCommand);
 
  private:
-  codehub::utils::CommandRegistry& m_registry;
+  const CommandRegistry& m_commandRegistry;
 };
+
+}  // namespace codehub::utils

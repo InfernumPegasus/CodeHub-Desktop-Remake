@@ -1,13 +1,15 @@
 #include "cmd-utils/CommandExecutor.h"
 
-CommandExecutor::CommandExecutor(codehub::utils::CommandRegistry& registry)
-    : m_registry(registry) {}
+codehub::utils::CommandExecutor::CommandExecutor(
+    const codehub::utils::CommandRegistry& registry)
+    : m_commandRegistry(registry) {}
 
-void CommandExecutor::ExecuteCommand(const codehub::utils::ParsedCommand& command) {
-  auto cmd = m_registry.GetCommand(command.m_keyword);
-  if (cmd) {
-    cmd->Execute(command);
-  } else {
-    inferlib::Printer::Println(std::cerr, "Unknown command: ", command.m_keyword);
+void codehub::utils::CommandExecutor::ExecuteCommand(
+    const codehub::utils::ParsedCommand& parsedCommand) {
+  try {
+    auto cmd = m_commandRegistry.at(parsedCommand.m_keyword);
+    std::visit([&parsedCommand](auto& cmd) { cmd.Execute(parsedCommand); }, cmd);
+  } catch (const std::range_error&) {
+    inferlib::Printer::Println(std::cerr, "Unknown command: ", parsedCommand.m_keyword);
   }
 }
