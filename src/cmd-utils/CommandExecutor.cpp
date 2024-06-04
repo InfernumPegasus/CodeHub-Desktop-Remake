@@ -7,7 +7,7 @@ codehub::utils::CommandExecutor::CommandExecutor(
 void codehub::utils::CommandExecutor::ExecuteCommand(
     const codehub::utils::ParsedCommand& parsedCommand) {
   try {
-    auto cmd = m_commandRegistry.at(parsedCommand.m_keyword);
+    auto cmd = m_commandRegistry.At(parsedCommand.m_keyword);
     std::visit([&parsedCommand](auto& cmd) { cmd.Execute(parsedCommand); }, cmd);
   } catch (const std::range_error&) {
     inferlib::Printer::Println(std::cerr, "Unknown command: ", parsedCommand.m_keyword);
