@@ -7,21 +7,14 @@
 
 namespace codehub::utils {
 
-class ICommand {
+class HelpCommand  {
  public:
-  virtual ~ICommand() = default;
-
-  virtual void Execute(const ParsedCommand& command) = 0;
+  void Execute(const ParsedCommand& command) { std::cout << "Help command\n"; }
 };
 
-class HelpCommand : public ICommand {
+class AddCommand {
  public:
-  void Execute(const ParsedCommand& command) override { std::cout << "Help command\n"; }
-};
-
-class AddCommand : public ICommand {
- public:
-  void Execute(const ParsedCommand& command) override { std::cout << "Add command\n"; }
+  void Execute(const ParsedCommand& command) { std::cout << "Add command\n"; }
 };
 
 }  // namespace codehub::utils
