@@ -1,7 +1,7 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
-#include <ranges>
 #include <utility>
 
 namespace inferlib {
@@ -11,8 +11,8 @@ struct ConstexprMap {
   std::array<std::pair<Key, Value>, Size> data;
 
   [[nodiscard]] constexpr Value At(const Key& key) const {
-    const auto itr =
-        std::ranges::find_if(data, [&key](const auto& v) { return v.first == key; });
+    const auto itr = std::find_if(data.cbegin(), data.cend(),
+                                  [&key](const auto& v) { return v.first == key; });
     if (itr != end(data)) {
       return itr->second;
     } else {
