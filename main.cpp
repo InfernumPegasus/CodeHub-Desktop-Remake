@@ -8,9 +8,11 @@ using namespace codehub::utils;
 
 int main(int argc, char* argv[]) {
   CommandLineParser parser;
-  auto command = parser.Parse(argc, argv);
-  if (command.has_value()) {
-    inferlib::Printer::Println(std::cout, command.value());
+  auto result = parser.Parse(argc, argv);
+
+  if (result.has_value()) {
+    auto command = result.value();
+    inferlib::Printer::Println(std::cout, command);
 
     constexpr std::array<std::pair<std::string_view, CommandVariant>,
                          std::variant_size_v<CommandVariant>>
