@@ -1,9 +1,9 @@
 #pragma once
 
 #include <algorithm>
+#include <expected>
 #include <iostream>
 #include <memory>
-#include <optional>
 #include <ranges>
 #include <string>
 #include <string_view>
@@ -17,20 +17,16 @@
 
 namespace codehub::utils {
 
-class CommandKeywordValidator : public ValidatorBase<ParsedCommand> {
- public:
-  bool Validate(const ParsedCommand& command) override;
-};
-
-class CommandFlagsValidator : public ValidatorBase<ParsedCommand> {
- public:
-  bool Validate(const ParsedCommand& command) override;
-};
-
 struct CommandLineParser {
+  enum class CommandLineParserStatus : int8_t {
+    OK,
+    WRONG_KEYWORD,
+    WRONG_FLAG,
+  };
+
   CommandLineParser();
 
-  std::optional<ParsedCommand> Parse(int argc, char* argv[]);
+  std::expected<ParsedCommand, CommandLineParserStatus> Parse(int argc, char* argv[]);
 
  private:
   void SetUp();
@@ -42,7 +38,21 @@ struct CommandLineParser {
   static CommandArgsList ExtractSimpleArgs(const CommandArgsList& rawArgs);
 
  private:
-  std::shared_ptr<ValidatorBase<ParsedCommand>> m_validator;
+  std::shared_ptr<ValidatorBase<ParsedCommand, CommandLineParserStatus>> m_validator;
+};
+
+class CommandKeywordValidator
+    : public ValidatorBase<ParsedCommand, CommandLineParser::CommandLineParserStatus> {
+ public:
+  CommandLineParser::CommandLineParserStatus Validate(
+      const ParsedCommand& command) override;
+};
+
+class CommandFlagsValidator
+    : public ValidatorBase<ParsedCommand, CommandLineParser::CommandLineParserStatus> {
+ public:
+  CommandLineParser::CommandLineParserStatus Validate(
+      const ParsedCommand& command) override;
 };
 
 }  // namespace codehub::utils
