@@ -19,4 +19,5 @@ std::ostream& operator<<(std::ostream& os, const ParsedCommand& command) {
 
   return os;
 }
+
 }  // namespace codehub::utils
