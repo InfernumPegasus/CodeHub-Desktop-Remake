@@ -19,6 +19,12 @@ struct ConstexprMap {
       throw std::range_error("Not Found");
     }
   }
+
+  [[nodiscard]] constexpr bool Contains(const Key& key) const {
+    const auto itr = std::find_if(data.cbegin(), data.cend(),
+                                  [&key](const auto& v) { return v.first == key; });
+    return itr != end(data);
+  }
 };
 
 template <typename Key, typename Variant>
