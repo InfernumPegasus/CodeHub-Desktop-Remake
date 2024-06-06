@@ -1,5 +1,7 @@
 #include "cmd-utils/CommandLineParser.h"
 
+#include "cmd-utils/Command.h"
+
 namespace codehub::utils {
 
 CommandLineParser::CommandLineParser() {
@@ -18,7 +20,7 @@ CommandLineParser::Parse(int argc, char** argv) {
 
   ParsedCommand command{args.at(1), flagsWithArgs, simpleArgsWithoutKeyword};
 
-  if (auto status = m_validator->Validate(command);
+  if (const auto status = m_validator->Validate(command);
       status != CommandLineParserStatus::OK) {
     return std::unexpected<CommandLineParserStatus>(status);
   }
@@ -67,14 +69,19 @@ CommandFlagsList CommandLineParser::ExtractFlagsWithArgs(const CommandArgsList& 
 
 CommandArgsList CommandLineParser::ExtractSimpleArgs(const CommandArgsList& rawArgs) {
   CommandArgsList simpleArgs;
-  std::ranges::copy_if(
-      rawArgs | std::views::drop(1), std::back_inserter(simpleArgs),
-      [](const std::string_view& arg) { return !arg.starts_with("--"); });
+  for (auto it = rawArgs.cbegin() + 1; it != rawArgs.cend(); ++it) {
+    if (!it->starts_with("--")) {
+      simpleArgs.push_back(*it);
+    }
+  }
   return simpleArgs;
 }
 
 CommandLineParser::CommandLineParserStatus CommandKeywordValidator::Validate(
     const ParsedCommand& command) {
+  if (!GLOBAL_COMMAND_REGISTRY.Contains(command.m_keyword)) {
+    return CommandLineParser::CommandLineParserStatus::UNKNOWN_COMMAND_KEYWORD;
+  }
   if (command.m_keyword.empty() || command.m_keyword.starts_with("--")) {
     return CommandLineParser::CommandLineParserStatus::WRONG_KEYWORD;
   }

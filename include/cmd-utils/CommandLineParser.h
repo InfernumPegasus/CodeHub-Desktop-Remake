@@ -1,19 +1,10 @@
 #pragma once
 
-#include <algorithm>
 #include <expected>
-#include <iostream>
 #include <memory>
-#include <ranges>
-#include <string>
-#include <string_view>
-#include <unordered_map>
-#include <utility>
-#include <vector>
 
 #include "ParsedCommand.h"
 #include "ValidatorBase.h"
-#include "lib/inferlib/Printer.h"
 
 namespace codehub::utils {
 
@@ -21,6 +12,7 @@ struct CommandLineParser {
   enum class CommandLineParserStatus : int8_t {
     OK,
     WRONG_KEYWORD,
+    UNKNOWN_COMMAND_KEYWORD,
     WRONG_FLAG,
   };
 
