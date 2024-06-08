@@ -8,12 +8,12 @@ namespace inferlib {
 struct Printer {
   // TODO ввести класс PrinterTraits с характеристиками
   template <class OStream, class... T>
-  static void Print(OStream& os, T&&... objs) {
+  static constexpr void Print(OStream& os, T&&... objs) {
     ((os << objs << ' '), ...);
   }
 
   template <class OStream, class... T>
-  static void Println(OStream& os, T&&... objs) {
+  static constexpr void Println(OStream& os, T&&... objs) {
     Print(os, objs...);
     os << '\n';
   }
