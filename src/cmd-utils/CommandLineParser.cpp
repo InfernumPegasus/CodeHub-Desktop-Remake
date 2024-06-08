@@ -12,6 +12,11 @@ CommandLineParser::CommandLineParser() {
 
 std::expected<ParsedCommand, CommandLineParser::CommandLineParserStatus>
 CommandLineParser::Parse(int argc, char** argv) {
+  if (argc < 2) {
+    return std::unexpected<CommandLineParserStatus>(
+        CommandLineParserStatus::LACK_OF_ARGUMENTS);
+  }
+
   const auto args = ArgvToStringViews(argc, argv);
   const auto flagsWithArgs = ExtractFlagsWithArgs(args);
   const auto simpleArgs = ExtractSimpleArgs(args);
@@ -20,7 +25,7 @@ CommandLineParser::Parse(int argc, char** argv) {
 
   ParsedCommand command{args.at(1), flagsWithArgs, simpleArgsWithoutKeyword};
 
-  if (const auto status = m_validator->Validate(command);
+  if (const auto status = m_validator->IsValid(command);
       status != CommandLineParserStatus::OK) {
     return std::unexpected<CommandLineParserStatus>(status);
   }
@@ -28,7 +33,7 @@ CommandLineParser::Parse(int argc, char** argv) {
   return command;
 }
 
-void CommandLineParser::SetUp() {
+constexpr void CommandLineParser::SetUp() {
   const auto setupValidators = [this]() {
     auto flagsValidator = std::make_shared<CommandFlagsValidator>();
 
@@ -38,11 +43,12 @@ void CommandLineParser::SetUp() {
   setupValidators();
 }
 
-CommandArgsList CommandLineParser::ArgvToStringViews(int argc, char** argv) {
+constexpr CommandArgsList CommandLineParser::ArgvToStringViews(int argc, char** argv) {
   return {argv, argv + argc};
 }
 
-CommandFlagsList CommandLineParser::ExtractFlagsWithArgs(const CommandArgsList& rawArgs) {
+constexpr CommandFlagsList CommandLineParser::ExtractFlagsWithArgs(
+    const CommandArgsList& rawArgs) {
   CommandFlagsList flagsList;
 
   for (const auto& arg : rawArgs) {
@@ -67,7 +73,8 @@ CommandFlagsList CommandLineParser::ExtractFlagsWithArgs(const CommandArgsList& 
   return flagsList;
 }
 
-CommandArgsList CommandLineParser::ExtractSimpleArgs(const CommandArgsList& rawArgs) {
+constexpr CommandArgsList CommandLineParser::ExtractSimpleArgs(
+    const CommandArgsList& rawArgs) {
   CommandArgsList simpleArgs;
   for (auto it = rawArgs.cbegin() + 1; it != rawArgs.cend(); ++it) {
     if (!it->starts_with("--")) {
@@ -77,21 +84,19 @@ CommandArgsList CommandLineParser::ExtractSimpleArgs(const CommandArgsList& rawA
   return simpleArgs;
 }
 
-CommandLineParser::CommandLineParserStatus CommandKeywordValidator::Validate(
+constexpr CommandLineParser::CommandLineParserStatus CommandKeywordValidator::IsValid(
     const ParsedCommand& command) {
-  if (!GLOBAL_COMMAND_REGISTRY.Contains(command.m_keyword)) {
-    return CommandLineParser::CommandLineParserStatus::UNKNOWN_COMMAND_KEYWORD;
-  }
-  if (command.m_keyword.empty() || command.m_keyword.starts_with("--")) {
+  if (!GLOBAL_COMMAND_REGISTRY.Contains(command.m_keyword) || command.m_keyword.empty() ||
+      command.m_keyword.starts_with("--")) {
     return CommandLineParser::CommandLineParserStatus::WRONG_KEYWORD;
   }
 
-  if (m_next) return m_next->Validate(command);
+  if (m_next) return m_next->IsValid(command);
 
   return CommandLineParser::CommandLineParserStatus::OK;
 }
 
-CommandLineParser::CommandLineParserStatus CommandFlagsValidator::Validate(
+constexpr CommandLineParser::CommandLineParserStatus CommandFlagsValidator::IsValid(
     const ParsedCommand& command) {
   for (const auto& [flag, shouldHaveValue] : command.m_flags) {
     if (flag.first.empty() || (shouldHaveValue && !flag.second.has_value()) ||
@@ -100,7 +105,7 @@ CommandLineParser::CommandLineParserStatus CommandFlagsValidator::Validate(
     }
   }
 
-  if (m_next) return m_next->Validate(command);
+  if (m_next) return m_next->IsValid(command);
 
   return CommandLineParser::CommandLineParserStatus::OK;
 }

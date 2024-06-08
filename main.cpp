@@ -7,17 +7,18 @@
 using namespace codehub::utils;
 
 // TODO : move into logging module
-void PrintCommandLineParserStatusError(
+constexpr void PrintCommandLineParserStatusError(
     CommandLineParser::CommandLineParserStatus status) {
+  using Status = CommandLineParser::CommandLineParserStatus;
   switch (status) {
-    case CommandLineParser::CommandLineParserStatus::UNKNOWN_COMMAND_KEYWORD:
-      inferlib::Printer::Println(std::cerr, "Error: No such command");
-      break;
-    case CommandLineParser::CommandLineParserStatus::WRONG_KEYWORD:
+    case Status::WRONG_KEYWORD:
       inferlib::Printer::Println(std::cerr, "Error: Wrong command keyword format");
       break;
-    case CommandLineParser::CommandLineParserStatus::WRONG_FLAG:
+    case Status::WRONG_FLAG:
       inferlib::Printer::Println(std::cerr, "Error: Wrong command flag or value format");
+      break;
+    case Status::LACK_OF_ARGUMENTS:
+      inferlib::Printer::Println(std::cerr, "Error: Lack of arguments");
       break;
     default:
       inferlib::Printer::Println(std::cerr, "Error: Unknown error occurred");
