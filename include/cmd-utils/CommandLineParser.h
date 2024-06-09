@@ -5,20 +5,14 @@
 
 #include "IValidator.h"
 #include "ParsedCommand.h"
+#include "logging/Error.h"
 
 namespace codehub::utils {
 
 struct CommandLineParser {
-  enum class CommandLineParserStatus : int8_t {
-    OK,
-    WRONG_KEYWORD,
-    WRONG_FLAG,
-    LACK_OF_ARGUMENTS,
-  };
-
   CommandLineParser();
 
-  std::expected<ParsedCommand, CommandLineParserStatus> Parse(int argc, char* argv[]);
+  std::expected<ParsedCommand, ParserStatus> Parse(int argc, char* argv[]);
 
  private:
   constexpr void SetUp();
@@ -30,21 +24,17 @@ struct CommandLineParser {
   static constexpr CommandArgsList ExtractSimpleArgs(const CommandArgsList& rawArgs);
 
  private:
-  std::shared_ptr<IValidator<ParsedCommand, CommandLineParserStatus>> m_validator;
+  std::shared_ptr<IValidator<ParsedCommand, ParserStatus>> m_validator;
 };
 
-class CommandKeywordValidator
-    : public IValidator<ParsedCommand, CommandLineParser::CommandLineParserStatus> {
+class CommandKeywordValidator : public IValidator<ParsedCommand, ParserStatus> {
  public:
-  constexpr CommandLineParser::CommandLineParserStatus IsValid(
-      const ParsedCommand& command) override;
+  constexpr ParserStatus IsValid(const ParsedCommand& command) override;
 };
 
-class CommandFlagsValidator
-    : public IValidator<ParsedCommand, CommandLineParser::CommandLineParserStatus> {
+class CommandFlagsValidator : public IValidator<ParsedCommand, ParserStatus> {
  public:
-  constexpr CommandLineParser::CommandLineParserStatus IsValid(
-      const ParsedCommand& command) override;
+  constexpr ParserStatus IsValid(const ParsedCommand& command) override;
 };
 
 }  // namespace codehub::utils

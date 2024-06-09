@@ -4,7 +4,7 @@
 #include <variant>
 
 #include "ParsedCommand.h"
-#include "utils/ConstexprMap.h"
+#include "lib/inferlib/ConstexprMap.h"
 
 namespace codehub::utils {
 

@@ -10,11 +10,10 @@ CommandLineParser::CommandLineParser() {
   SetUp();
 }
 
-std::expected<ParsedCommand, CommandLineParser::CommandLineParserStatus>
+std::expected<ParsedCommand, ParserStatus>
 CommandLineParser::Parse(int argc, char** argv) {
   if (argc < 2) {
-    return std::unexpected<CommandLineParserStatus>(
-        CommandLineParserStatus::LACK_OF_ARGUMENTS);
+    return std::unexpected<ParserStatus>(ParserStatus::LACK_OF_ARGUMENTS);
   }
 
   const auto args = ArgvToStringViews(argc, argv);
@@ -26,8 +25,8 @@ CommandLineParser::Parse(int argc, char** argv) {
   ParsedCommand command{args.at(1), flagsWithArgs, simpleArgsWithoutKeyword};
 
   if (const auto status = m_validator->IsValid(command);
-      status != CommandLineParserStatus::OK) {
-    return std::unexpected<CommandLineParserStatus>(status);
+      status != ParserStatus::OK) {
+    return std::unexpected<ParserStatus>(status);
   }
 
   return command;
@@ -84,30 +83,30 @@ constexpr CommandArgsList CommandLineParser::ExtractSimpleArgs(
   return simpleArgs;
 }
 
-constexpr CommandLineParser::CommandLineParserStatus CommandKeywordValidator::IsValid(
+constexpr ParserStatus CommandKeywordValidator::IsValid(
     const ParsedCommand& command) {
   if (!GLOBAL_COMMAND_REGISTRY.Contains(command.m_keyword) || command.m_keyword.empty() ||
       command.m_keyword.starts_with("--")) {
-    return CommandLineParser::CommandLineParserStatus::WRONG_KEYWORD;
+    return ParserStatus::WRONG_KEYWORD;
   }
 
   if (m_next) return m_next->IsValid(command);
 
-  return CommandLineParser::CommandLineParserStatus::OK;
+  return ParserStatus::OK;
 }
 
-constexpr CommandLineParser::CommandLineParserStatus CommandFlagsValidator::IsValid(
+constexpr ParserStatus CommandFlagsValidator::IsValid(
     const ParsedCommand& command) {
   for (const auto& [flag, shouldHaveValue] : command.m_flags) {
     if (flag.first.empty() || (shouldHaveValue && !flag.second.has_value()) ||
         flag.first == "--") {
-      return CommandLineParser::CommandLineParserStatus::WRONG_FLAG;
+      return ParserStatus::WRONG_FLAG;
     }
   }
 
   if (m_next) return m_next->IsValid(command);
 
-  return CommandLineParser::CommandLineParserStatus::OK;
+  return ParserStatus::OK;
 }
 
 }  // namespace codehub::utils
