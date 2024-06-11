@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <expected>
 #include <utility>
 #include <variant>
 
@@ -28,17 +29,8 @@ struct ConstexprMap {
   }
 };
 
-template <typename Key, typename Variant>
-struct ConstexprVariantMap
-    : public ConstexprMap<Key, Variant, std::variant_size_v<Variant>> {};
-
 template <typename Key, typename Value, typename... Pairs>
 constexpr auto MakeConstexprMap(Pairs&&... pairs) {
-  static_assert((std::is_same_v<std::decay_t<decltype(pairs.first)>, Key> && ...),
-                "All keys must be of the same type");
-  static_assert((std::is_same_v<std::decay_t<decltype(pairs.second)>, Value> && ...),
-                "All values must be of the same type");
-
   return ConstexprMap<Key, Value, sizeof...(pairs)>{
       std::array<std::pair<Key, Value>, sizeof...(pairs)>{std::forward<Pairs>(pairs)...}};
 }
