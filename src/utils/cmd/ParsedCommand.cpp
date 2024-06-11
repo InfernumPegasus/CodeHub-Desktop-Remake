@@ -1,4 +1,4 @@
-#include "cmd-utils/ParsedCommand.h"
+#include "utils/cmd/ParsedCommand.h"
 
 namespace codehub::utils {
 

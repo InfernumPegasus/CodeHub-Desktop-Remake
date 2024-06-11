@@ -3,8 +3,8 @@
 #include <iostream>
 #include <variant>
 
-#include "cmd-utils/ParsedCommand.h"
 #include "lib/inferlib/ConstexprMap.h"
+#include "utils/cmd/ParsedCommand.h"
 
 namespace codehub::utils {
 
@@ -14,30 +14,36 @@ struct Command {
 };
 
 struct HelpCommand : Command<HelpCommand> {
-  static void ExecuteImpl(const ParsedCommand& command) { std::cout << "Help command\n"; }
+  static void ExecuteImpl(const ParsedCommand& command);
 };
 
 struct AddCommand : Command<AddCommand> {
-  static void ExecuteImpl(const ParsedCommand& command) { std::cout << "Add command\n"; }
+  static void ExecuteImpl(const ParsedCommand& command);
 };
 
 struct VersionCommand : Command<VersionCommand> {
-  static void ExecuteImpl(const ParsedCommand& command) {
-    std::cout << "Version command\n";
-  }
+  static void ExecuteImpl(const ParsedCommand& command);
 };
 
-using CommandVariant = std::variant<HelpCommand, AddCommand, VersionCommand>;
-using CommandRegistry = inferlib::ConstexprVariantMap<std::string_view, CommandVariant>;
+struct LogCommand : Command<LogCommand> {
+  static void ExecuteImpl(const ParsedCommand& command);
+};
 
-static constexpr std::array<std::pair<std::string_view, CommandVariant>,
-                            std::variant_size_v<CommandVariant>>
-    commands{{
-        {"help", HelpCommand()},
-        {"add", AddCommand()},
-        {"version", VersionCommand()},
-    }};
+// clang-format off
+using CommandVariant = std::variant<
+    HelpCommand,
+    AddCommand,
+    VersionCommand,
+    LogCommand
+>;
 
-static constexpr CommandRegistry GLOBAL_COMMAND_REGISTRY{{commands}};
+static constexpr auto GLOBAL_COMMAND_REGISTRY =
+    inferlib::MakeConstexprMap<std::string_view, CommandVariant>(
+        std::pair{"help", HelpCommand()},
+        std::pair{"add", AddCommand()},
+        std::pair{"version", VersionCommand()},
+        std::pair{"log", LogCommand()}
+    );
+// clang-format on
 
 }  // namespace codehub::utils

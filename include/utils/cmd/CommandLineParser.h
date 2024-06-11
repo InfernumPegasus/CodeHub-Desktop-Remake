@@ -5,7 +5,7 @@
 
 #include "IValidator.h"
 #include "ParsedCommand.h"
-#include "logging/Error.h"
+#include "utils/error/Error.h"
 
 namespace codehub::utils {
 

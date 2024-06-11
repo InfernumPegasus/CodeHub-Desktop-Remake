@@ -1,4 +1,4 @@
-#include "cmd-utils/CommandLineParser.h"
+#include "utils/cmd/CommandLineParser.h"
 
 #include "command/Command.h"
 
@@ -10,8 +10,8 @@ CommandLineParser::CommandLineParser() {
   SetUp();
 }
 
-std::expected<ParsedCommand, ParserStatus>
-CommandLineParser::Parse(int argc, char** argv) {
+std::expected<ParsedCommand, ParserStatus> CommandLineParser::Parse(int argc,
+                                                                    char** argv) {
   if (argc < 2) {
     return std::unexpected<ParserStatus>(ParserStatus::LACK_OF_ARGUMENTS);
   }
@@ -24,8 +24,7 @@ CommandLineParser::Parse(int argc, char** argv) {
 
   ParsedCommand command{args.at(1), flagsWithArgs, simpleArgsWithoutKeyword};
 
-  if (const auto status = m_validator->IsValid(command);
-      status != ParserStatus::OK) {
+  if (const auto status = m_validator->IsValid(command); status != ParserStatus::OK) {
     return std::unexpected<ParserStatus>(status);
   }
 
@@ -83,8 +82,7 @@ constexpr CommandArgsList CommandLineParser::ExtractSimpleArgs(
   return simpleArgs;
 }
 
-constexpr ParserStatus CommandKeywordValidator::IsValid(
-    const ParsedCommand& command) {
+constexpr ParserStatus CommandKeywordValidator::IsValid(const ParsedCommand& command) {
   if (!GLOBAL_COMMAND_REGISTRY.Contains(command.m_keyword) || command.m_keyword.empty() ||
       command.m_keyword.starts_with("--")) {
     return ParserStatus::WRONG_KEYWORD;
@@ -95,8 +93,7 @@ constexpr ParserStatus CommandKeywordValidator::IsValid(
   return ParserStatus::OK;
 }
 
-constexpr ParserStatus CommandFlagsValidator::IsValid(
-    const ParsedCommand& command) {
+constexpr ParserStatus CommandFlagsValidator::IsValid(const ParsedCommand& command) {
   for (const auto& [flag, shouldHaveValue] : command.m_flags) {
     if (flag.first.empty() || (shouldHaveValue && !flag.second.has_value()) ||
         flag.first == "--") {
