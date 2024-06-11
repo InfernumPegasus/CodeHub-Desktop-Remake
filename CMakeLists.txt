@@ -6,9 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "-Wall -pedantic -Wno-maybe-uninitialized -Werror -O3")
 
 add_library(global
-        src/cmd-utils/ParsedCommand.cpp
-        src/cmd-utils/CommandLineParser.cpp
-        src/cmd-utils/CommandExecutor.cpp
+        src/utils/cmd/ParsedCommand.cpp
+        src/utils/cmd/CommandLineParser.cpp
+        src/command/Command.cpp
+        src/command/CommandExecutor.cpp
 )
 
 target_include_directories(global PUBLIC include)

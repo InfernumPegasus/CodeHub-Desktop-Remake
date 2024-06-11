@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include "cmd-utils/CommandExecutor.h"
-#include "cmd-utils/CommandLineParser.h"
+#include "command/CommandExecutor.h"
 #include "lib/inferlib/Printer.h"
-#include "logging/Error.h"
+#include "utils/cmd/CommandLineParser.h"
+#include "utils/error/Error.h"
 
 using namespace codehub::utils;
 
