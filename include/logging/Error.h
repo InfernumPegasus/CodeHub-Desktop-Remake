@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string_view>
-#include <unordered_map>
 
 #include "lib/inferlib/ConstexprMap.h"
 #include "lib/inferlib/Printer.h"
