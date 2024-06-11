@@ -1,6 +1,6 @@
 #include "cmd-utils/CommandLineParser.h"
 
-#include "cmd-utils/Command.h"
+#include "command/Command.h"
 
 namespace codehub::utils {
 

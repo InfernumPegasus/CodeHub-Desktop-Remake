@@ -3,7 +3,7 @@
 #include <iostream>
 #include <variant>
 
-#include "ParsedCommand.h"
+#include "cmd-utils/ParsedCommand.h"
 #include "lib/inferlib/ConstexprMap.h"
 
 namespace codehub::utils {
