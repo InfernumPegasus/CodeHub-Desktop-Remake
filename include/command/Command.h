@@ -37,6 +37,19 @@ using CommandVariant = std::variant<
     LogCommand
 >;
 
+static constexpr auto COMMAND_DESCRIPTIONS =
+    inferlib::MakeConstexprMap<std::string_view, std::string_view>(
+        std::pair{"help", "List of all supported commands"},
+        std::pair{"config", "Configure global settings"},
+        std::pair{"init", "Init repository"},
+        std::pair{"add", "Add file(s), directory(ies) to tracked"},
+        std::pair{"commit", "Commit added files"},
+        std::pair{"revert", "Revert certain commit"},
+        std::pair{"log", "See commit log in branch"},
+        std::pair{"branch", "Create new branch"},
+        std::pair{"checkout", "Change branch"}
+);
+
 static constexpr auto GLOBAL_COMMAND_REGISTRY =
     inferlib::MakeConstexprMap<std::string_view, CommandVariant>(
         std::pair{"help", HelpCommand()},
