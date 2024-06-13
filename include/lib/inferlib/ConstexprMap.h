@@ -35,4 +35,15 @@ constexpr auto MakeConstexprMap(Pairs&&... pairs) {
       std::array<std::pair<Key, Value>, sizeof...(pairs)>{std::forward<Pairs>(pairs)...}};
 }
 
+template <typename Key, typename Value, std::size_t Size, std::size_t... I>
+constexpr auto ExtractKeysImpl(const ConstexprMap<Key, Value, Size>& map,
+                               std::index_sequence<I...>) {
+  return std::array<Key, Size>{map.data[I].first...};
+}
+
+template <typename Key, typename Value, std::size_t Size>
+constexpr auto ExtractKeys(const ConstexprMap<Key, Value, Size>& map) {
+  return ExtractKeysImpl(map, std::make_index_sequence<Size>{});
+}
+
 }  // namespace inferlib
