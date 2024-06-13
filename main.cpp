@@ -1,7 +1,4 @@
-#include <iostream>
-
 #include "command/CommandExecutor.h"
-#include "lib/inferlib/Printer.h"
 #include "utils/cmd/CommandLineParser.h"
 #include "utils/error/Error.h"
 
@@ -12,13 +9,9 @@ int main(int argc, char* argv[]) {
   auto result = parser.Parse(argc, argv);
 
   if (result.has_value()) {
-    auto command = result.value();
-    inferlib::Printer::Println(std::cout, command);
-
-    CommandExecutor::ExecuteCommand(command);
+    CommandExecutor::ExecuteCommand(result.value());
   } else {
-    auto errorStatus = result.error();
-    PrintError(errorStatus);
+    PrintError(result.error());
   }
 
   return 0;
