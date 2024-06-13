@@ -5,10 +5,11 @@
 
 #include "lib/inferlib/Printer.h"
 #include "utils/cmd/ParsedCommand.h"
+#include "utils/config/VersionInfo.h"
 
 namespace codehub::utils {
 
-void utils::HelpCommand::ExecuteImpl(const ParsedCommand& command) {
+void HelpCommand::ExecuteImpl(const ParsedCommand& command) {
   using namespace inferlib;
 
   constexpr size_t maxNameLength =
@@ -25,16 +26,28 @@ void utils::HelpCommand::ExecuteImpl(const ParsedCommand& command) {
   }
 }
 
-void AddCommand::ExecuteImpl(const ParsedCommand& command) {
-  std::cout << "Add command\n";
-}
+void ConfigCommand::ExecuteImpl(const ParsedCommand& command) {}
+
+void InitCommand::ExecuteImpl(const ParsedCommand& command) {}
+
+void AddCommand::ExecuteImpl(const ParsedCommand& command) {}
+
+void CommitCommand::ExecuteImpl(const ParsedCommand& command) {}
+
+void RevertCommand::ExecuteImpl(const ParsedCommand& command) {}
+
+void LogCommand::ExecuteImpl(const ParsedCommand& command) {}
 
 void VersionCommand::ExecuteImpl(const ParsedCommand& command) {
-  std::cout << "Version command\n";
+  using namespace codehub::version;
+
+  inferlib::Printer::Println(std::cout, ABOUT);
+  inferlib::Printer::Println(std::cout, "Version:", VERSION);
+  inferlib::Printer::Println(std::cout, "Author:", AUTHOR, AUTHOR_GITHUB);
 }
 
-void LogCommand::ExecuteImpl(const ParsedCommand& command) {
-  std::cout << "Log command\n";
-}
+void BranchCommand::ExecuteImpl(const ParsedCommand& command) {}
+
+void CheckoutCommand::ExecuteImpl(const ParsedCommand& command) {}
 
 }  // namespace codehub::utils
