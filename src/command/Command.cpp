@@ -1,8 +1,7 @@
-#include "command/Command.h"
-
 #include <iomanip>
 #include <iostream>
 
+#include "command/ICommand.h"
 #include "lib/inferlib/Printer.h"
 #include "utils/cmd/ParsedCommand.h"
 #include "utils/config/VersionInfo.h"
@@ -40,10 +39,11 @@ void LogCommand::ExecuteImpl(const ParsedCommand& command) {}
 
 void VersionCommand::ExecuteImpl(const ParsedCommand& command) {
   using namespace codehub::version;
+  using inferlib::Printer;
 
-  inferlib::Printer::Println(std::cout, ABOUT);
-  inferlib::Printer::Println(std::cout, "Version:", VERSION);
-  inferlib::Printer::Println(std::cout, "Author:", AUTHOR, AUTHOR_GITHUB);
+  Printer::Println(std::cout, ABOUT);
+  Printer::Println(std::cout, "Version:", VERSION);
+  Printer::Println(std::cout, "Author:", AUTHOR, AUTHOR_GITHUB);
 }
 
 void BranchCommand::ExecuteImpl(const ParsedCommand& command) {}

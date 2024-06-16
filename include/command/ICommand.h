@@ -9,47 +9,47 @@
 namespace codehub::utils {
 
 template <typename Impl>
-struct Command {
+struct ICommand {
   static void Execute(const ParsedCommand& command) { Impl::ExecuteImpl(command); }
 };
 
-struct HelpCommand : Command<HelpCommand> {
+struct HelpCommand : ICommand<HelpCommand> {
   static void ExecuteImpl(const ParsedCommand& command);
 };
 
-struct ConfigCommand : Command<ConfigCommand> {
+struct ConfigCommand : ICommand<ConfigCommand> {
   static void ExecuteImpl(const ParsedCommand& command);
 };
 
-struct InitCommand : Command<InitCommand> {
+struct InitCommand : ICommand<InitCommand> {
   static void ExecuteImpl(const ParsedCommand& command);
 };
 
-struct AddCommand : Command<AddCommand> {
+struct AddCommand : ICommand<AddCommand> {
   static void ExecuteImpl(const ParsedCommand& command);
 };
 
-struct CommitCommand : Command<CommitCommand> {
+struct CommitCommand : ICommand<CommitCommand> {
   static void ExecuteImpl(const ParsedCommand& command);
 };
 
-struct RevertCommand : Command<RevertCommand> {
+struct RevertCommand : ICommand<RevertCommand> {
   static void ExecuteImpl(const ParsedCommand& command);
 };
 
-struct LogCommand : Command<LogCommand> {
+struct LogCommand : ICommand<LogCommand> {
   static void ExecuteImpl(const ParsedCommand& command);
 };
 
-struct VersionCommand : Command<VersionCommand> {
+struct VersionCommand : ICommand<VersionCommand> {
   static void ExecuteImpl(const ParsedCommand& command);
 };
 
-struct BranchCommand : Command<BranchCommand> {
+struct BranchCommand : ICommand<BranchCommand> {
   static void ExecuteImpl(const ParsedCommand& command);
 };
 
-struct CheckoutCommand : Command<CheckoutCommand> {
+struct CheckoutCommand : ICommand<CheckoutCommand> {
   static void ExecuteImpl(const ParsedCommand& command);
 };
 
@@ -66,7 +66,6 @@ using CommandVariant = std::variant<
     BranchCommand,
     CheckoutCommand
 >;
-
 
 static constexpr auto COMMAND_DESCRIPTIONS =
     inferlib::MakeConstexprMap<std::string_view, std::string_view>(

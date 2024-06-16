@@ -1,6 +1,6 @@
 #include "utils/cmd/CommandLineParser.h"
 
-#include "command/Command.h"
+#include "command/ICommand.h"
 
 namespace codehub::utils {
 
@@ -12,17 +12,12 @@ CommandLineParser::CommandLineParser() {
 
 std::expected<ParsedCommand, ParserStatus> CommandLineParser::Parse(int argc,
                                                                     char** argv) {
-  if (argc < 2) {
-    return std::unexpected<ParserStatus>(ParserStatus::LACK_OF_ARGUMENTS);
-  }
-
   const auto args = ArgvToStringViews(argc, argv);
   const auto flagsWithArgs = ExtractFlagsWithArgs(args);
   const auto simpleArgs = ExtractSimpleArgs(args);
-  const CommandArgsList simpleArgsWithoutKeyword{simpleArgs.cbegin() + 1,
-                                                 simpleArgs.cend()};
+  const auto keyword = !simpleArgs.empty() ? simpleArgs.front() : "";
 
-  ParsedCommand command{args.at(1), flagsWithArgs, simpleArgsWithoutKeyword};
+  ParsedCommand command{keyword, flagsWithArgs, simpleArgs};
 
   if (const auto status = m_validator->IsValid(command); status != ParserStatus::OK) {
     return std::unexpected<ParserStatus>(status);
@@ -42,7 +37,7 @@ constexpr void CommandLineParser::SetUp() {
 }
 
 constexpr CommandArgsList CommandLineParser::ArgvToStringViews(int argc, char** argv) {
-  return {argv, argv + argc};
+  return {argv + 1, argv + argc - 1};
 }
 
 constexpr CommandFlagsList CommandLineParser::ExtractFlagsWithArgs(
@@ -74,9 +69,9 @@ constexpr CommandFlagsList CommandLineParser::ExtractFlagsWithArgs(
 constexpr CommandArgsList CommandLineParser::ExtractSimpleArgs(
     const CommandArgsList& rawArgs) {
   CommandArgsList simpleArgs;
-  for (auto it = rawArgs.cbegin() + 1; it != rawArgs.cend(); ++it) {
-    if (!it->starts_with("--")) {
-      simpleArgs.push_back(*it);
+  for (const auto& rawArg : rawArgs) {
+    if (!rawArg.starts_with("--")) {
+      simpleArgs.push_back(rawArg);
     }
   }
   return simpleArgs;

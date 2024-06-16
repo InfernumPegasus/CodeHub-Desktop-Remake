@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "command/Command.h"
+#include "command/ICommand.h"
 
 namespace codehub::utils {
 
