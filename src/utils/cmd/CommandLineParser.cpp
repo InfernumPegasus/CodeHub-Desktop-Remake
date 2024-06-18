@@ -15,7 +15,7 @@ std::expected<ParsedCommand, ParserStatus> CommandLineParser::Parse(int argc,
   const auto args = ArgvToStringViews(argc, argv);
   const auto flagsWithArgs = ExtractFlagsWithArgs(args);
   const auto simpleArgs = ExtractSimpleArgs(args);
-  const auto keyword = !simpleArgs.empty() ? simpleArgs.front() : "";
+  const auto keyword = !args.empty() ? args.front() : "";
 
   ParsedCommand command{keyword, flagsWithArgs, simpleArgs};
 
