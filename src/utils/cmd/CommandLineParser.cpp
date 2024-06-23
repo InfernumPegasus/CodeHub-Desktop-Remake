@@ -4,9 +4,8 @@
 
 namespace codehub::utils {
 
-CommandLineParser::CommandLineParser() {
-  m_validator = std::make_shared<CommandKeywordValidator>();
-
+CommandLineParser::CommandLineParser()
+    : m_validator{std::make_unique<CommandKeywordValidator>()} {
   SetUp();
 }
 
@@ -28,9 +27,9 @@ std::expected<ParsedCommand, ParserStatus> CommandLineParser::Parse(int argc,
 
 constexpr void CommandLineParser::SetUp() {
   const auto setupValidators = [this]() {
-    auto flagsValidator = std::make_shared<CommandFlagsValidator>();
+    auto flagsValidator = std::make_unique<CommandFlagsValidator>();
 
-    m_validator->SetNext(flagsValidator);
+    m_validator->SetNext(std::move(flagsValidator));
   };
 
   setupValidators();

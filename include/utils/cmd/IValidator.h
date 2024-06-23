@@ -11,12 +11,12 @@ class IValidator {
  public:
   virtual ~IValidator() = default;
 
-  constexpr void SetNext(std::shared_ptr<IValidator> next) { m_next = next; }
+  constexpr void SetNext(std::unique_ptr<IValidator> next) { m_next = std::move(next); }
 
   constexpr virtual Status IsValid(const Object&) = 0;
 
  protected:
-  std::shared_ptr<IValidator> m_next;
+  std::unique_ptr<IValidator> m_next;
 };
 
 }  // namespace codehub::utils

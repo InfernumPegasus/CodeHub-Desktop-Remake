@@ -24,7 +24,7 @@ struct CommandLineParser {
   static constexpr CommandArgsList ExtractSimpleArgs(const CommandArgsList& rawArgs);
 
  private:
-  std::shared_ptr<IValidator<ParsedCommand, ParserStatus>> m_validator;
+  std::unique_ptr<IValidator<ParsedCommand, ParserStatus>> m_validator;
 };
 
 class CommandKeywordValidator : public IValidator<ParsedCommand, ParserStatus> {
