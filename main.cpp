@@ -6,9 +6,9 @@ using namespace codehub::utils;
 
 int main(int argc, char* argv[]) {
   const auto command = CommandLineParser::Parse(argc, argv);
-  auto validator = ConstructCommandLineParserValidator();
+  auto validator = ConstructValidator(ValidateCommandKeyword, ValidateCommandFlags);
 
-  if (auto status = validator->IsValid(command); status == ParserStatus::OK) {
+  if (auto status = validator.Validate(command); status == ParserStatus::OK) {
     CommandExecutor::ExecuteCommand(command);
   } else {
     PrintError(status);

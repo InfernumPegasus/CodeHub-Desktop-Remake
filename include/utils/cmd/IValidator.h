@@ -1,6 +1,8 @@
 #pragma once
 
-#include <memory>
+#include <array>
+#include <string>
+#include <utility>
 
 #include "command/ICommand.h"
 #include "utils/cmd/ParsedCommand.h"
@@ -8,55 +10,60 @@
 
 namespace codehub::utils {
 
-template <class Object, class Status>
-class IValidator {
- public:
-  virtual ~IValidator() = default;
-
-  constexpr void SetNext(std::unique_ptr<IValidator> next) { m_next = std::move(next); }
-
-  constexpr virtual Status IsValid(const Object&) = 0;
-
- protected:
-  std::unique_ptr<IValidator> m_next;
+template <typename, typename Status>
+struct ValidatorResult {
+  Status status;
+  std::string errorMessage;
 };
 
-class CommandKeywordValidator : public IValidator<ParsedCommand, ParserStatus> {
+template <typename Object, typename Status>
+using ValidatorFunction = ValidatorResult<Object, Status> (*)(const Object&);
+
+template <typename Object, typename Status, std::size_t N>
+class ValidatorChain {
  public:
-  constexpr ParserStatus IsValid(const ParsedCommand& command) override {
-    if (!GLOBAL_COMMAND_REGISTRY.Contains(command.m_keyword) ||
-        command.m_keyword.empty() || command.m_keyword.starts_with("--")) {
-      return ParserStatus::WRONG_KEYWORD;
-    }
+  constexpr explicit ValidatorChain(
+      std::array<ValidatorFunction<Object, Status>, N> validators)
+      : validators_(std::move(validators)) {}
 
-    if (m_next) return m_next->IsValid(command);
-
-    return ParserStatus::OK;
-  }
-};
-
-class CommandFlagsValidator : public IValidator<ParsedCommand, ParserStatus> {
- public:
-  constexpr ParserStatus IsValid(const ParsedCommand& command) override {
-    for (const auto& [flag, shouldHaveValue] : command.m_flags) {
-      if (flag.first.empty() || (shouldHaveValue && !flag.second.has_value()) ||
-          flag.first == "--") {
-        return ParserStatus::WRONG_FLAG;
+  [[nodiscard]] constexpr Status Validate(const Object& obj) const {
+    for (auto validator : validators_) {
+      auto result = validator(obj);
+      if (result.status != Status::OK) {
+        return result.status;
       }
     }
-
-    if (m_next) return m_next->IsValid(command);
-
-    return ParserStatus::OK;
+    return Status::OK;
   }
+
+ private:
+  std::array<ValidatorFunction<Object, Status>, N> validators_;
 };
 
-constexpr std::unique_ptr<CommandKeywordValidator> ConstructCommandLineParserValidator() {
-  auto commandKeywordValidator = std::make_unique<CommandKeywordValidator>();
-  auto flagsValidator = std::make_unique<CommandFlagsValidator>();
-  commandKeywordValidator->SetNext(std::move(flagsValidator));
+constexpr ValidatorResult<ParsedCommand, ParserStatus> ValidateCommandKeyword(
+    const ParsedCommand& command) {
+  if (!command.m_keyword.empty() && !command.m_keyword.starts_with("--") &&
+      GLOBAL_COMMAND_REGISTRY.Contains(command.m_keyword)) {
+    return {ParserStatus::OK, ""};
+  }
+  return {ParserStatus::WRONG_KEYWORD, "Invalid keyword"};
+}
 
-  return commandKeywordValidator;
+constexpr ValidatorResult<ParsedCommand, ParserStatus> ValidateCommandFlags(
+    const ParsedCommand& command) {
+  for (const auto& [flag, shouldHaveValue] : command.m_flags) {
+    if (flag.first.empty() || (shouldHaveValue && !flag.second.has_value()) ||
+        flag.first == "--") {
+      return {ParserStatus::WRONG_FLAG, "Invalid flag"};
+    }
+  }
+  return {ParserStatus::OK, ""};
+}
+
+template <typename... Validators>
+constexpr auto ConstructValidator(Validators... validators) {
+  return ValidatorChain<ParsedCommand, ParserStatus, sizeof...(validators)>{
+      {validators...}};
 }
 
 }  // namespace codehub::utils
