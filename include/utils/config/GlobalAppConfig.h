@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string_view>
+#include <string>
 
-namespace codehub::utils {
+namespace codehub::utils::config {
 
 struct GlobalAppConfig {
   std::string m_username;

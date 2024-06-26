@@ -5,13 +5,13 @@
 using namespace codehub::utils;
 
 int main(int argc, char* argv[]) {
-  CommandLineParser parser;
-  auto result = parser.Parse(argc, argv);
+  const auto command = CommandLineParser::Parse(argc, argv);
+  auto validator = ConstructCommandLineParserValidator();
 
-  if (result.has_value()) {
-    CommandExecutor::ExecuteCommand(result.value());
+  if (auto status = validator->IsValid(command); status == ParserStatus::OK) {
+    CommandExecutor::ExecuteCommand(command);
   } else {
-    PrintError(result.error());
+    PrintError(status);
   }
 
   return 0;

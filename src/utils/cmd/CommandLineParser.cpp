@@ -4,35 +4,13 @@
 
 namespace codehub::utils {
 
-CommandLineParser::CommandLineParser()
-    : m_validator{std::make_unique<CommandKeywordValidator>()} {
-  SetUp();
-}
-
-std::expected<ParsedCommand, ParserStatus> CommandLineParser::Parse(int argc,
-                                                                    char** argv) {
+ParsedCommand CommandLineParser::Parse(int argc, char** argv) {
   const auto args = ArgvToStringViews(argc, argv);
   const auto flagsWithArgs = ExtractFlagsWithArgs(args);
   const auto simpleArgs = ExtractSimpleArgs(args);
   const auto keyword = !args.empty() ? args.front() : "";
 
-  ParsedCommand command{keyword, flagsWithArgs, simpleArgs};
-
-  if (const auto status = m_validator->IsValid(command); status != ParserStatus::OK) {
-    return std::unexpected<ParserStatus>(status);
-  }
-
-  return command;
-}
-
-constexpr void CommandLineParser::SetUp() {
-  const auto setupValidators = [this]() {
-    auto flagsValidator = std::make_unique<CommandFlagsValidator>();
-
-    m_validator->SetNext(std::move(flagsValidator));
-  };
-
-  setupValidators();
+  return {keyword, flagsWithArgs, simpleArgs};
 }
 
 constexpr CommandArgsList CommandLineParser::ArgvToStringViews(int argc, char** argv) {
@@ -74,30 +52,6 @@ constexpr CommandArgsList CommandLineParser::ExtractSimpleArgs(
     }
   }
   return simpleArgs;
-}
-
-constexpr ParserStatus CommandKeywordValidator::IsValid(const ParsedCommand& command) {
-  if (!GLOBAL_COMMAND_REGISTRY.Contains(command.m_keyword) || command.m_keyword.empty() ||
-      command.m_keyword.starts_with("--")) {
-    return ParserStatus::WRONG_KEYWORD;
-  }
-
-  if (m_next) return m_next->IsValid(command);
-
-  return ParserStatus::OK;
-}
-
-constexpr ParserStatus CommandFlagsValidator::IsValid(const ParsedCommand& command) {
-  for (const auto& [flag, shouldHaveValue] : command.m_flags) {
-    if (flag.first.empty() || (shouldHaveValue && !flag.second.has_value()) ||
-        flag.first == "--") {
-      return ParserStatus::WRONG_FLAG;
-    }
-  }
-
-  if (m_next) return m_next->IsValid(command);
-
-  return ParserStatus::OK;
 }
 
 }  // namespace codehub::utils
