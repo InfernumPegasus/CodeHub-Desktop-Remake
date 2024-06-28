@@ -61,7 +61,7 @@ constexpr ValidatorResult<ParsedCommand, ParserStatus> ValidateCommandFlags(
 }
 
 template <typename... Validators>
-constexpr auto ConstructValidator(Validators... validators) {
+constexpr auto ConstructParserValidator(Validators... validators) {
   return ValidatorChain<ParsedCommand, ParserStatus, sizeof...(validators)>{
       {validators...}};
 }

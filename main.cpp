@@ -6,7 +6,7 @@ using namespace codehub::utils;
 
 int main(int argc, char* argv[]) {
   const auto command = CommandLineParser::Parse(argc, argv);
-  auto validator = ConstructValidator(ValidateCommandKeyword, ValidateCommandFlags);
+  auto validator = ConstructParserValidator(ValidateCommandKeyword, ValidateCommandFlags);
 
   if (auto status = validator.Validate(command); status == ParserStatus::OK) {
     CommandExecutor::ExecuteCommand(command);
