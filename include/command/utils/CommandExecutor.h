@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
-
-#include "command/ICommand.h"
+#include "utils/cmd/ParsedCommand.h"
 
 namespace codehub::utils {
 

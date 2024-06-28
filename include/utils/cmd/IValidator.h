@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 
-#include "command/ICommand.h"
+#include "command/utils/CommandsUtils.h"
 #include "utils/cmd/ParsedCommand.h"
 #include "utils/error/Error.h"
 
