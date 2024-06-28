@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils/cmd/ParsedCommand.h"
+#include "utils/parser/ParsedCommand.h"
 
 namespace codehub::utils {
 

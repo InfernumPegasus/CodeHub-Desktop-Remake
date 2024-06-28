@@ -5,7 +5,7 @@
 #include <utility>
 
 #include "command/utils/CommandsUtils.h"
-#include "utils/cmd/ParsedCommand.h"
+#include "utils/parser/ParsedCommand.h"
 #include "utils/error/Error.h"
 
 namespace codehub::utils {

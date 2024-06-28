@@ -1,5 +1,5 @@
 #include "command/utils/CommandExecutor.h"
-#include "utils/cmd/CommandLineParser.h"
+#include "utils/parser/CommandLineParser.h"
 #include "utils/error/Error.h"
 
 using namespace codehub::utils;
