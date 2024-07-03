@@ -1,6 +1,7 @@
 #pragma once
 
 #include "command/Commands.h"
+#include "lib/inferlib/comparison/Comparison.h"
 
 namespace codehub::utils {
 
@@ -46,5 +47,16 @@ static constexpr auto GLOBAL_COMMAND_REGISTRY =
         std::pair{"checkout", CheckoutCommand()}
     );
 // clang-format on
+
+static_assert(inferlib::AllEqual(GLOBAL_COMMAND_REGISTRY.data.size(),
+                                 COMMAND_DESCRIPTIONS.data.size(),
+                                 std::variant_size_v<CommandVariant>),
+              "CommandVariant, GLOBAL_COMMAND_DESCRIPTIONS and GLOBAL_COMMAND_REGISTRY "
+              "sizes are not equal");
+
+static_assert(
+    inferlib::AllEqual(ExtractKeys(GLOBAL_COMMAND_REGISTRY),
+                       ExtractKeys(COMMAND_DESCRIPTIONS)),
+    "GLOBAL_COMMAND_REGISTRY and GLOBAL_COMMAND_DESCRIPTIONS keys are not equal");
 
 }  // namespace codehub::utils
