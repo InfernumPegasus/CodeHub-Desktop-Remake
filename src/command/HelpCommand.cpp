@@ -3,7 +3,7 @@
 #include <iomanip>
 
 #include "command/utils/CommandsUtils.h"
-#include "lib/inferlib/Printer.h"
+#include "lib/inferlib/printer/Printer.h"
 
 namespace codehub::utils {
 
