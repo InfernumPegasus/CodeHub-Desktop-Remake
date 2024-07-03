@@ -1,7 +1,5 @@
 #pragma once
 
-#include <functional>
-
 #include "ValidatorChain.h"
 #include "command/utils/CommandsUtils.h"
 
