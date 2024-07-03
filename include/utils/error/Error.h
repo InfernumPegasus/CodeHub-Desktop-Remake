@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string_view>
 
-#include "lib/inferlib/ConstexprMap.h"
-#include "lib/inferlib/Printer.h"
+#include "lib/inferlib/data_structure/ConstexprMap.h"
+#include "lib/inferlib/printer/Printer.h"
 
 namespace codehub::utils {
 
