@@ -14,6 +14,7 @@ ParsedCommand CommandLineParser::Parse(int argc, char** argv) {
 }
 
 constexpr CommandArgsList CommandLineParser::ArgvToStringViews(int argc, char** argv) {
+  if (argc < 2) return {};
   return {argv + 1, argv + argc - 1};
 }
 
