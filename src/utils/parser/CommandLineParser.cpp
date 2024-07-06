@@ -47,9 +47,11 @@ constexpr CommandFlagsList CommandLineParser::ExtractFlagsWithArgs(
 constexpr CommandArgsList CommandLineParser::ExtractSimpleArgs(
     const CommandArgsList& rawArgs) {
   CommandArgsList simpleArgs;
-  for (const auto& rawArg : rawArgs) {
-    if (!rawArg.starts_with("--")) {
-      simpleArgs.push_back(rawArg);
+  if (rawArgs.size() >= 2) {
+    for (size_t i = 1; i < rawArgs.size(); i++) {
+      if (!rawArgs[i].starts_with("--")) {
+        simpleArgs.push_back(rawArgs[i]);
+      }
     }
   }
   return simpleArgs;
