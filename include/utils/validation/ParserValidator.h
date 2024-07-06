@@ -8,7 +8,7 @@ namespace codehub::utils {
 constexpr auto ValidateCommandKeyword =
     [](const ParsedCommand& command) -> ValidatorResult<ParsedCommand, ParserStatus> {
   if (!command.m_keyword.empty() && !command.m_keyword.starts_with("--") &&
-      GLOBAL_COMMAND_REGISTRY.Contains(command.m_keyword)) {
+      command::GLOBAL_COMMAND_REGISTRY.Contains(command.m_keyword)) {
     return {ParserStatus::OK, ""};
   }
   return {ParserStatus::WRONG_KEYWORD, "Invalid keyword"};

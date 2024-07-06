@@ -12,12 +12,13 @@ void HelpCommand::ExecuteImpl(const ParsedCommand&) {
 
   constexpr size_t maxNameLength =
       std::max_element(
-          COMMAND_DESCRIPTIONS.data.begin(), COMMAND_DESCRIPTIONS.data.end(),
+          command::COMMAND_DESCRIPTIONS.data.begin(),
+          command::COMMAND_DESCRIPTIONS.data.end(),
           [](const auto& a, const auto& b) { return a.first.size() < b.first.size(); })
           ->first.size();
 
   Printer::Println(std::cout, "Available commands:");
-  for (const auto& [name, description] : COMMAND_DESCRIPTIONS.data) {
+  for (const auto& [name, description] : command::COMMAND_DESCRIPTIONS.data) {
     Printer::Println(std::cout, name,
                      std::setw(static_cast<int>(maxNameLength - name.size() + 2)), " - ",
                      description);
