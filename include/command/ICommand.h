@@ -4,7 +4,7 @@
 #include <variant>
 
 #include "lib/inferlib/data_structure/ConstexprMap.h"
-#include "utils/parser/ParsedCommand.h"
+#include "utils/parser/ParserUtils.h"
 
 namespace codehub::utils {
 

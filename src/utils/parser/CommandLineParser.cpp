@@ -13,18 +13,18 @@ ParsedCommand CommandLineParser::Parse(int argc, char** argv) {
   return {keyword, flagsWithArgs, simpleArgs};
 }
 
-constexpr CommandArgsList CommandLineParser::ArgvToStringViews(int argc, char** argv) {
+constexpr ArgsListView CommandLineParser::ArgvToStringViews(int argc, char** argv) {
   if (argc < 2) return {};
   return {argv + 1, argv + argc - 1};
 }
 
-constexpr CommandFlagsList CommandLineParser::ExtractFlagsWithArgs(
-    const CommandArgsList& rawArgs) {
-  CommandFlagsList flagsList;
+constexpr FlagsListView CommandLineParser::ExtractFlagsWithArgs(
+    const ArgsListView& rawArgs) {
+  FlagsListView flagsList;
 
   for (const auto& arg : rawArgs) {
     if (arg.starts_with("--")) {
-      ParsedCommandFlag f;
+      ParsedFlagView f;
 
       if (auto pos = arg.find('='); pos != std::string_view::npos) {
         const auto flag = arg.substr(0, pos);
@@ -44,9 +44,8 @@ constexpr CommandFlagsList CommandLineParser::ExtractFlagsWithArgs(
   return flagsList;
 }
 
-constexpr CommandArgsList CommandLineParser::ExtractSimpleArgs(
-    const CommandArgsList& rawArgs) {
-  CommandArgsList simpleArgs;
+constexpr ArgsListView CommandLineParser::ExtractSimpleArgs(const ArgsListView& rawArgs) {
+  ArgsListView simpleArgs;
   if (rawArgs.size() >= 2) {
     for (size_t i = 1; i < rawArgs.size(); i++) {
       if (!rawArgs[i].starts_with("--")) {

@@ -1,8 +1,13 @@
-#include "lib/inferlib/filesystem/FilesystemUtils.h"
+#include "utils/filesystem/FilesystemUtils.h"
 
-namespace inferlib::filesystem {
+namespace codehub::filesystem {
 
 bool FileExists(std::string_view path) { return std::filesystem::exists(path); }
+
+bool FileExists(const std::filesystem::path& path) {
+  return std::filesystem::exists(path);
+}
+
 
 std::filesystem::path GetHomePath() {
 #if defined(_WIN32) || defined(_WIN64)
@@ -20,4 +25,4 @@ std::filesystem::path GetHomePath() {
 
   throw std::logic_error("HOME path cannot be determined");
 }
-}  // namespace inferlib::filesystem
+}  // namespace codehub::filesystem

@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace codehub::utils::config {
+namespace codehub::utils {
 
 struct GlobalAppConfig {
   std::string m_username;

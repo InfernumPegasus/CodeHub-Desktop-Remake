@@ -6,12 +6,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "-Wall -Wpedantic -Wno-maybe-uninitialized -Werror -O3")
 
 file(GLOB PARSER_SOURCES
-        "src/utils/parser/ParsedCommand.cpp"
+        "src/utils/parser/ParserUtils.cpp"
         "src/utils/parser/CommandLineParser.cpp"
+        "src/utils/parser/IniConfigParser.cpp"
 )
 file(GLOB COMMAND_SOURCES "src/command/*.cpp")
 file(GLOB COMMAND_UTILS_SOURCES "src/command/utils/CommandExecutor.cpp")
-file(GLOB FILESYSTEM_UTILS_SOURCES "src/lib/filesystem/FilesystemUtils.cpp")
+file(GLOB FILESYSTEM_UTILS_SOURCES "src/utils/filesystem/FilesystemUtils.cpp")
 
 add_library(global
         ${PARSER_SOURCES}

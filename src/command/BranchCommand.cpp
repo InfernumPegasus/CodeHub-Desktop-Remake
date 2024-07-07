@@ -1,6 +1,6 @@
 #include "command/BranchCommand.h"
 
-#include "utils/parser/ParsedCommand.h"
+#include "utils/parser/ParserUtils.h"
 
 namespace codehub::utils {
 

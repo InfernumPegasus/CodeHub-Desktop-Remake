@@ -3,11 +3,11 @@
 #include <filesystem>
 #include <string_view>
 
-#include "lib/inferlib/filesystem/FilesystemUtils.h"
+#include "utils/filesystem/FilesystemUtils.h"
 
-namespace codehub::config {
+namespace codehub::filesystem {
 
-static const std::filesystem::path HOME_PATH = inferlib::filesystem::GetHomePath();
+static const std::filesystem::path HOME_PATH = GetHomePath();
 
 static constexpr std::string_view GLOBAL_APP_FOLDER = "CodeHubR";
 
