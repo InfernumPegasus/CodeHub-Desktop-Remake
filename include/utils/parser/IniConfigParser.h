@@ -2,6 +2,7 @@
 
 #include <filesystem>
 
+#include "ParsedIniFile.h"
 #include "utils/config/GlobalAppConfig.h"
 #include "utils/parser/ParserUtils.h"
 

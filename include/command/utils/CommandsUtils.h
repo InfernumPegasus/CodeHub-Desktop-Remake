@@ -2,6 +2,7 @@
 
 #include "command/Commands.h"
 #include "lib/inferlib/comparison/Comparison.h"
+#include "lib/inferlib/data_structure/ConstexprMap.h"
 
 namespace codehub::utils::command {
 
@@ -82,4 +83,4 @@ static_assert(
                        ExtractKeys(COMMAND_DESCRIPTIONS)),
     "GLOBAL_COMMAND_REGISTRY and GLOBAL_COMMAND_DESCRIPTIONS keys are not equal");
 
-}  // namespace codehub::utils
+}  // namespace codehub::utils::command

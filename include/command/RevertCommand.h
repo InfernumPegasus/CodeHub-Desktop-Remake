@@ -5,7 +5,7 @@
 namespace codehub::utils {
 
 struct RevertCommand : ICommand<RevertCommand> {
-  static void ExecuteImpl(const ParsedCommand& command);
+  static CommandExecutionStatus ExecuteImpl(const ParsedCommand& command);
 };
 
 }  // namespace codehub::utils

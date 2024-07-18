@@ -1,9 +1,10 @@
 #pragma once
 
+#include <filesystem>
 #include <optional>
 #include <ostream>
-#include <string_view>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -31,20 +32,6 @@ struct ParsedFlag {
   KeyOptValuePair m_keyValuePair;
 
   bool m_shouldHaveValue;
-};
-
-struct ParsedCommand {
-  std::string_view m_keyword;
-  FlagsListView m_flags;
-  ArgsListView m_args;
-
-  friend std::ostream& operator<<(std::ostream& os, const ParsedCommand& command);
-};
-
-struct ParsedIniFile {
-  IniSectionFlagsMap m_sectionFlagsMap;
-
-  friend std::ostream& operator<<(std::ostream& os, const ParsedIniFile& iniFile);
 };
 
 }  // namespace codehub::utils

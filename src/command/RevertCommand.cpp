@@ -2,6 +2,8 @@
 
 namespace codehub::utils {
 
-void RevertCommand::ExecuteImpl(const ParsedCommand& command) {}
+CommandExecutionStatus RevertCommand::ExecuteImpl(const ParsedCommand& command) {
+  return CommandExecutionStatus::OK;
+}
 
 }  // namespace codehub::utils

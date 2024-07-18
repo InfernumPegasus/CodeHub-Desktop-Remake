@@ -1,15 +1,18 @@
 #pragma once
 
 #include <filesystem>
+#include <vector>
 
 namespace codehub::filesystem {
 
-[[nodiscard]] bool FileExists(std::string_view path);
-
-[[nodiscard]] bool FileExists(const std::filesystem::path& path);
+[[nodiscard]] bool ElementExists(const std::filesystem::path& path);
 
 [[nodiscard]] std::filesystem::path GetHomePath();
 
-//[[nodiscard]] std::filesystem::path Form
+[[nodiscard]] std::vector<std::string> ReadTextFile(const std::filesystem::path& path);
+
+bool CreateFile(const std::filesystem::path& path);
+
+bool CreateDirectory(const std::filesystem::path& path);
 
 }  // namespace codehub::filesystem

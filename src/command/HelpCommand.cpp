@@ -7,7 +7,7 @@
 
 namespace codehub::utils {
 
-void HelpCommand::ExecuteImpl(const ParsedCommand&) {
+CommandExecutionStatus HelpCommand::ExecuteImpl(const ParsedCommand&) {
   using namespace inferlib;
 
   constexpr size_t maxNameLength =
@@ -23,6 +23,8 @@ void HelpCommand::ExecuteImpl(const ParsedCommand&) {
                      std::setw(static_cast<int>(maxNameLength - name.size() + 2)), " - ",
                      description);
   }
+
+  return CommandExecutionStatus::OK;
 }
 
 }  // namespace codehub::utils

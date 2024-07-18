@@ -32,13 +32,14 @@ ParsedIniFile IniConfigParser::Parse(const std::vector<std::string>& lines) {
       }
 
       const ParsedFlag flag = {
-          {key, shouldHaveValue ? std::optional<std::string>(value) : std::nullopt},
+          {key, shouldHaveValue ? std::make_optional<std::string>(value) : std::nullopt},
           shouldHaveValue};
       iniMap[currentSection].push_back(flag);
     }
   }
 
-  return {iniMap};
+  ParsedIniFile file(iniMap);
+  return file;
 }
 
 }  // namespace codehub::utils

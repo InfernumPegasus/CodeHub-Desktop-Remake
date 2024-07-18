@@ -1,7 +1,8 @@
 #pragma once
 
+#include "ParsedCommand.h"
 #include "ParserUtils.h"
-#include "utils/error/Error.h"
+#include "utils/status/Status.h"
 
 namespace codehub::utils {
 

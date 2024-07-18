@@ -4,6 +4,8 @@
 
 namespace codehub::utils {
 
-void BranchCommand::ExecuteImpl(const ParsedCommand& command) {}
+CommandExecutionStatus BranchCommand::ExecuteImpl(const ParsedCommand& command) {
+  return CommandExecutionStatus::OK;
+}
 
 }  // namespace codehub::utils

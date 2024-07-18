@@ -2,6 +2,8 @@
 
 namespace codehub::utils {
 
-void CheckoutCommand::ExecuteImpl(const ParsedCommand& command) {}
+CommandExecutionStatus CheckoutCommand::ExecuteImpl(const ParsedCommand& command) {
+  return CommandExecutionStatus::OK;
+}
 
 }  // namespace codehub::utils

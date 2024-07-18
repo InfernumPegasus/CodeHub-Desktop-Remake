@@ -6,7 +6,8 @@ namespace codehub::utils {
 
 void CommandExecutor::ExecuteCommand(const ParsedCommand& command) {
   const auto cmd = command::GLOBAL_COMMAND_REGISTRY.At(command.m_keyword);
-  std::visit([&command](auto&& cmd) { cmd.Execute(command); }, cmd);
+  [[maybe_unused]] const auto res =
+      std::visit([&command](auto&& cmd) { return cmd.Execute(command); }, cmd);
 }
 
 }  // namespace codehub::utils
