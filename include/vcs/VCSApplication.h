@@ -2,6 +2,7 @@
 
 #include "utils/config/GlobalAppConfig.h"
 #include "utils/parser/ParsedCommand.h"
+#include "utils/status/Status.h"
 
 namespace codehub {
 
@@ -14,11 +15,11 @@ class VCSApplication {
   void Run();
 
  private:
-  void CheckGlobalConfig();
-
   void CheckConfiguration();
 
-  void CheckCommand();
+  utils::ParserStatus CheckGlobalConfig();
+
+  utils::ParserStatus CheckCommand();
 
  private:
   int m_argc;

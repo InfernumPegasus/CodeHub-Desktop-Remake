@@ -29,42 +29,34 @@ void VCSApplication::Init() { CheckConfiguration(); }
 
 void VCSApplication::Run() { CommandExecutor::ExecuteCommand(m_command); }
 
-void VCSApplication::CheckGlobalConfig() {
-  //    if (!ElementExists(GLOBAL_APP_FOLDER_PATH)) {
-  //      if (!CreateDirectory(GLOBAL_APP_FOLDER_PATH)) {
-  //      }
-  //    }
-  //
-  //    if (!ElementExists(GLOBAL_APP_CONFIG_PATH)) {
-  //      if (!CreateFile(GLOBAL_APP_CONFIG_PATH)) {
-  //      }
-  //    }
+void VCSApplication::CheckConfiguration() {
+  if (const auto status = CheckGlobalConfig(); status != ParserStatus::OK) {
+    Printer::Println(std::cout,
+                     "CheckGlobalConfig() error. Please check your config or use 'config "
+                     "--init' command");
+    PrintError(status);
+    std::exit(1);
+  }
 
+  if (const auto status = CheckCommand(); status != ParserStatus::OK) {
+    Printer::Println(
+        std::cout,
+        "CheckCommand() error. Please check your command or use 'help' command");
+    PrintError(status);
+    std::exit(2);
+  }
+}
+
+utils::ParserStatus VCSApplication::CheckGlobalConfig() {
   static constexpr auto globalConfigValidator =
       ConstructValidatorChain<GlobalAppConfig, ParserStatus>(ValidateGlobalAppConfig);
-  if (const auto status = globalConfigValidator.Validate(m_globalAppConfig);
-      status != ParserStatus::OK) {
-    PrintError(status);
-    throw std::runtime_error("CheckGlobalConfig() error");
-  }
+  return globalConfigValidator.Validate(m_globalAppConfig);
 }
 
-void VCSApplication::CheckConfiguration() {
-  CheckGlobalConfig();
-  Printer::Println(std::cout, "CheckGlobalConfig() success");
-
-  CheckCommand();
-  Printer::Println(std::cout, "CheckCommand() success");
-}
-
-void VCSApplication::CheckCommand() {
+utils::ParserStatus VCSApplication::CheckCommand() {
   static constexpr auto validator = ConstructValidatorChain<ParsedCommand, ParserStatus>(
       ValidateCommandKeyword, ValidateCommandFlags);
-
-  if (auto status = validator.Validate(m_command); status != ParserStatus::OK) {
-    PrintError(status);
-    throw std::runtime_error("CheckCommand() error");
-  }
+  return validator.Validate(m_command);
 }
 
 }  // namespace codehub
