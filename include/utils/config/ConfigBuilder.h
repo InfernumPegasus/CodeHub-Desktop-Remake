@@ -14,12 +14,12 @@ struct ConfigBuilder {
 };
 
 struct GlobalAppConfigBuilder : ConfigBuilder<GlobalAppConfig, GlobalAppConfigBuilder> {
-  static GlobalAppConfig Build(const ParsedIniFile& validatedIniFile) {
+  static GlobalAppConfig Build(const ParsedIniFile& parsedIniFile) {
     const auto userName =
-        validatedIniFile.GetFlagFromSection(GlobalAppConfig::SectionName, "username")
+        parsedIniFile.GetFlagFromSection(GlobalAppConfig::SectionName, "username")
             ->m_keyValuePair.second.value_or("");
     const auto email =
-        validatedIniFile.GetFlagFromSection(GlobalAppConfig::SectionName, "email")
+        parsedIniFile.GetFlagFromSection(GlobalAppConfig::SectionName, "email")
             ->m_keyValuePair.second.value_or("");
 
     return {userName, email};
