@@ -30,12 +30,12 @@ static constexpr auto COMMAND_EXECUTION_STATUS_ERRORS =
         std::pair{CommandExecutionStatus::RUNTIME_ERROR, "Runtime error"});
 
 constexpr void PrintError(ParserStatus status) {
-  inferlib::Printer::Println(std::cerr, "Parser: ", PARSER_STATUS_ERRORS.At(status));
+  inferlib::Printer::Println(std::cout, "Parser: ", PARSER_STATUS_ERRORS.At(status));
 }
 
 constexpr void PrintError(CommandExecutionStatus status) {
   inferlib::Printer::Println(
-      std::cerr, "CommandExecutor: ", COMMAND_EXECUTION_STATUS_ERRORS.At(status));
+      std::cout, "CommandExecutor: ", COMMAND_EXECUTION_STATUS_ERRORS.At(status));
 }
 
 }  // namespace codehub::utils
