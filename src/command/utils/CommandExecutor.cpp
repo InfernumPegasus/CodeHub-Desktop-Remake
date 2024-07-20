@@ -4,10 +4,10 @@
 
 namespace codehub::utils {
 
-void CommandExecutor::ExecuteCommand(const ParsedCommand& command) {
+CommandExecutionStatus CommandExecutor::Execute(const ParsedCommand& command) {
   const auto cmd = command::GLOBAL_COMMAND_REGISTRY.At(command.m_keyword);
-  [[maybe_unused]] const auto res =
-      std::visit([&command](auto&& cmd) { return cmd.Execute(command); }, cmd);
+
+  return std::visit([&command](auto&& cmd) { return cmd.Execute(command); }, cmd);
 }
 
 }  // namespace codehub::utils

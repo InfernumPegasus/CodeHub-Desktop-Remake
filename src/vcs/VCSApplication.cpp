@@ -27,7 +27,13 @@ VCSApplication::VCSApplication(int argc, char** argv) : m_argc(argc), m_argv(arg
 
 void VCSApplication::Init() { CheckConfiguration(); }
 
-void VCSApplication::Run() { CommandExecutor::ExecuteCommand(m_command); }
+void VCSApplication::Run() {
+  if (const auto status = CommandExecutor::Execute(m_command);
+      status != CommandExecutionStatus::OK) {
+    PrintError(status);
+    std::exit(3);
+  }
+}
 
 void VCSApplication::CheckConfiguration() {
   if (const auto status = CheckGlobalConfig(); status != ParserStatus::OK) {
