@@ -41,7 +41,6 @@ void VCSApplication::CheckConfiguration() {
                      "CheckGlobalConfig() error. Please check your config or use 'config "
                      "--init' command");
     PrintError(status);
-    std::exit(1);
   }
 
   if (const auto status = CheckCommand(); status != ParserStatus::OK) {
@@ -60,6 +59,7 @@ utils::ParserStatus VCSApplication::CheckGlobalConfig() {
 }
 
 utils::ParserStatus VCSApplication::CheckCommand() {
+  // TODO: add command flags validation
   static constexpr auto validator = ConstructValidatorChain<ParsedCommand, ParserStatus>(
       ValidateCommandKeyword, ValidateCommandFlags);
   return validator.Validate(m_command);
