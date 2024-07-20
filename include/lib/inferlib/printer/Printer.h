@@ -9,7 +9,7 @@ struct Printer {
   // TODO ввести класс PrinterTraits с характеристиками
   template <class OStream, class... T>
   static constexpr void Print(OStream& os, T&&... objs) {
-    ((os << objs << ' '), ...);
+    ((os << objs), ...);
   }
 
   template <class OStream, class... T>
