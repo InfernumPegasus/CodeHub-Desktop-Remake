@@ -3,6 +3,7 @@
 #include <iostream>
 #include <variant>
 
+#include "lib/inferlib/data_structure/ConstexprMap.h"
 #include "utils/parser/ParsedCommand.h"
 #include "utils/status/Status.h"
 
