@@ -9,10 +9,10 @@ namespace codehub::utils {
 
 constexpr auto ValidateGlobalAppConfig =
     [](const GlobalAppConfig& config) -> ValidatorResult<GlobalAppConfig, ParserStatus> {
-  if (config.m_username.empty() || config.m_email.empty()) {
+  if (config.GetUsername().empty() || config.GetEmail().empty()) {
     return {ParserStatus::LACK_OF_ARGUMENTS, "'username' or 'email' fields not provided"};
   }
-  return {ParserStatus::OK};
+  return {ParserStatus::OK, ""};
 };
 
 }  // namespace codehub::utils
