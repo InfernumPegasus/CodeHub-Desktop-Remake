@@ -1,6 +1,6 @@
-#include "command/utils/CommandExecutor.h"
+#include "command/CommandExecutor.h"
 
-#include "command/utils/CommandsUtils.h"
+#include "command/CommandsUtils.h"
 
 namespace codehub::utils {
 

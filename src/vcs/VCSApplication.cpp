@@ -1,6 +1,6 @@
 #include "vcs/VCSApplication.h"
 
-#include "command/utils/CommandExecutor.h"
+#include "command/CommandExecutor.h"
 #include "lib/inferlib/printer/Printer.h"
 #include "utils/config/ConfigBuilder.h"
 #include "utils/config/ConfigFilenames.h"

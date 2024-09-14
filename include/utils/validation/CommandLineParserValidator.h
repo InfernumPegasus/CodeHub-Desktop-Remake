@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ValidatorChain.h"
-#include "command/utils/CommandsUtils.h"
+#include "command/CommandsUtils.h"
 #include "utils/parser/ParsedCommand.h"
 
 namespace codehub::utils {

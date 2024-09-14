@@ -3,27 +3,28 @@ project(CodeHub)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "-Wall -Wpedantic -Wno-maybe-uninitialized -Werror -O3")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Wno-maybe-uninitialized -O3")
+
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 file(GLOB PARSER_SOURCES
         "src/utils/parser/CommandLineParser.cpp"
-        "src/utils/parser/ParsedCommand.cpp"
         "src/utils/parser/IniConfigParser.cpp"
         "src/utils/parser/ParsedIniFile.cpp"
 )
+file(GLOB CONFIG_SOURCES "src/utils/config/*.cpp")
 file(GLOB COMMAND_SOURCES "src/command/*.cpp")
-file(GLOB COMMAND_UTILS_SOURCES "src/command/utils/CommandExecutor.cpp")
 file(GLOB FILESYSTEM_UTILS_SOURCES "src/utils/filesystem/FilesystemUtils.cpp")
 
-add_library(global
-        ${PARSER_SOURCES}
-        ${COMMAND_SOURCES}
-        ${COMMAND_UTILS_SOURCES}
-        ${FILESYSTEM_UTILS_SOURCES}
-)
+add_library(parser ${PARSER_SOURCES})
+add_library(command ${COMMAND_SOURCES})
+add_library(config ${CONFIG_SOURCES})
+add_library(filesystem_utils ${FILESYSTEM_UTILS_SOURCES})
 
-target_include_directories(global PUBLIC include)
-target_include_directories(global PRIVATE src)
+target_include_directories(parser PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(command PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(config PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(filesystem_utils PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_executable(
         ${PROJECT_NAME}
@@ -32,5 +33,5 @@ add_executable(
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        global
+        parser command config filesystem_utils
 )

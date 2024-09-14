@@ -1,7 +1,7 @@
 #include "command/VersionCommand.h"
 
 #include "lib/inferlib/printer/Printer.h"
-#include "utils/config/VersionInfo.h"
+#include "utils/config/metadata/VersionInfo.h"
 
 namespace codehub::utils {
 
