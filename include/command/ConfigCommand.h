@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ICommand.h"
-#include "lib/inferlib/data_structure/ConstexprMap.h"
+#include "utils/config/GlobalAppConfig.h"
 
 namespace codehub::utils {
 
@@ -15,6 +15,10 @@ struct ConfigCommand : ICommand<ConfigCommand> {
   // clang-format on
 
   static CommandExecutionStatus ExecuteImpl(const ParsedCommand& command);
+
+  static bool CreateGlobalAppConfig();
+
+  static bool WriteGlobalAppConfig(const utils::GlobalAppConfig& config);
 };
 
 }  // namespace codehub::utils
