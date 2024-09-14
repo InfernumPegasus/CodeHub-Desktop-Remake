@@ -29,10 +29,14 @@ static constexpr auto COMMAND_EXECUTION_STATUS_ERRORS =
         std::pair{CommandExecutionStatus::LOGIC_ERROR, "Logic error"},
         std::pair{CommandExecutionStatus::RUNTIME_ERROR, "Runtime error"});
 
+/// Функция для вывода ошибки по коду парсера
+/// \param status ошибка парсера
 constexpr void PrintError(ParserStatus status) {
   inferlib::Printer::Println(std::cout, "Parser: ", PARSER_STATUS_ERRORS.At(status));
 }
 
+/// Функция для вывода ошибки по коду выполнения команды
+/// \param status ошибка выполнения команды
 constexpr void PrintError(CommandExecutionStatus status) {
   inferlib::Printer::Println(
       std::cout, "CommandExecutor: ", COMMAND_EXECUTION_STATUS_ERRORS.At(status));

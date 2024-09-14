@@ -7,6 +7,8 @@
 namespace codehub::utils::command {
 
 // clang-format off
+
+// Вариант со всеми поддерживаемыми командами
 using CommandVariant = std::variant<
     HelpCommand,
     ConfigCommand,
@@ -20,27 +22,27 @@ using CommandVariant = std::variant<
     CheckoutCommand
 >;
 
-constexpr std::string_view HELP_COMMAND         = "help";
-constexpr std::string_view CONFIG_COMMAND       = "config";
-constexpr std::string_view INIT_COMMAND         = "init";
-constexpr std::string_view ADD_COMMAND          = "add";
-constexpr std::string_view COMMIT_COMMAND       = "commit";
-constexpr std::string_view REVERT_COMMAND       = "revert";
-constexpr std::string_view LOG_COMMAND          = "log";
-constexpr std::string_view VERSION_COMMAND      = "version";
-constexpr std::string_view BRANCH_COMMAND       = "branch";
-constexpr std::string_view CHECKOUT_COMMAND     = "checkout";
+constexpr auto HELP_COMMAND         = "help";
+constexpr auto CONFIG_COMMAND       = "config";
+constexpr auto INIT_COMMAND         = "init";
+constexpr auto ADD_COMMAND          = "add";
+constexpr auto COMMIT_COMMAND       = "commit";
+constexpr auto REVERT_COMMAND       = "revert";
+constexpr auto LOG_COMMAND          = "log";
+constexpr auto VERSION_COMMAND      = "version";
+constexpr auto BRANCH_COMMAND       = "branch";
+constexpr auto CHECKOUT_COMMAND     = "checkout";
 
-constexpr std::string_view HELP_DESCRIPTION     = "List of all supported commands";
-constexpr std::string_view CONFIG_DESCRIPTION   = "Configure global settings";
-constexpr std::string_view INIT_DESCRIPTION     = "Init repository";
-constexpr std::string_view ADD_DESCRIPTION      = "Add file(s), directory(ies) to tracked";
-constexpr std::string_view COMMIT_DESCRIPTION   = "Commit added files";
-constexpr std::string_view REVERT_DESCRIPTION   = "Revert certain commit";
-constexpr std::string_view LOG_DESCRIPTION      = "See commit log in branch";
-constexpr std::string_view VERSION_DESCRIPTION  = "Version of software";
-constexpr std::string_view BRANCH_DESCRIPTION   = "Create new branch";
-constexpr std::string_view CHECKOUT_DESCRIPTION = "Change branch";
+constexpr auto HELP_DESCRIPTION     = "List of all supported commands";
+constexpr auto CONFIG_DESCRIPTION   = "Configure global settings";
+constexpr auto INIT_DESCRIPTION     = "Init repository";
+constexpr auto ADD_DESCRIPTION      = "Add file(s), directory(ies) to tracked";
+constexpr auto COMMIT_DESCRIPTION   = "Commit added files";
+constexpr auto REVERT_DESCRIPTION   = "Revert certain commit";
+constexpr auto LOG_DESCRIPTION      = "See commit log in branch";
+constexpr auto VERSION_DESCRIPTION  = "Version of software";
+constexpr auto BRANCH_DESCRIPTION   = "Create new branch";
+constexpr auto CHECKOUT_DESCRIPTION = "Change branch";
 
 static constexpr auto COMMAND_DESCRIPTIONS =
     inferlib::MakeConstexprMap<std::string_view, std::string_view>(
@@ -71,12 +73,14 @@ static constexpr auto GLOBAL_COMMAND_REGISTRY =
     );
 // clang-format on
 
+// Проверка на равенство количества команд и их описаний
 static_assert(inferlib::AllEqual(GLOBAL_COMMAND_REGISTRY.data.size(),
                                  COMMAND_DESCRIPTIONS.data.size(),
                                  std::variant_size_v<CommandVariant>),
               "CommandVariant, GLOBAL_COMMAND_DESCRIPTIONS and GLOBAL_COMMAND_REGISTRY "
               "sizes are not equal");
 
+// Проверка на соответствие имен команд и их описаний
 static_assert(
     inferlib::AllEqual(ExtractKeys(GLOBAL_COMMAND_REGISTRY),
                        ExtractKeys(COMMAND_DESCRIPTIONS)),
