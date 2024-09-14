@@ -6,15 +6,25 @@
 
 namespace codehub::utils {
 
+/// Класс-строитель ini-конфигов
+/// \tparam Config тип создаваемого конфига
+/// \tparam Builder тип строителя когфига
 template <class Config, class Builder>
 struct ConfigBuilder {
-  static Config Build(const ParsedIniFile& validatedIniFile) {
-    return Builder::Build(validatedIniFile);
+  /// Метод для построения конфига из подготовленного ini-файла
+  /// \param parsedIniFile подготовленный ini-файл
+  /// \return конфиг типа Config
+  static constexpr Config Build(const ParsedIniFile& parsedIniFile) {
+    return Builder::Build(parsedIniFile);
   }
 };
 
+/// Специализированный класс строителя для конфига типа GlobalAppConfig
 struct GlobalAppConfigBuilder : ConfigBuilder<GlobalAppConfig, GlobalAppConfigBuilder> {
-  static GlobalAppConfig Build(const ParsedIniFile& parsedIniFile) {
+  /// Реализация построения конфига
+  /// \param parsedIniFile подготовленный ini-файл
+  /// \return конфиг типа GlobalAppConfig
+  static constexpr GlobalAppConfig Build(const ParsedIniFile& parsedIniFile) {
     const auto userName =
         parsedIniFile.GetFlagFromSection(GlobalAppConfig::SectionName, "username")
             ->m_keyValuePair.second.value_or("");
