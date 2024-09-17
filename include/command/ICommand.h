@@ -17,7 +17,7 @@ struct ICommand {
   /// команды
   /// \param command команда для выполнения
   /// \return статус выполнения команды
-  static CommandExecutionStatus Execute(const ParsedCommand& command) {
+  static constexpr CommandExecutionStatus Execute(const ParsedCommand& command) {
     return Impl::ExecuteImpl(command);
   }
 };
