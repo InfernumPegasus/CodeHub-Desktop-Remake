@@ -10,18 +10,18 @@ namespace codehub::utils {
 
 /// Класс для унифицированного парсинга ini-файлов
 struct IniConfigParser {
-  static constexpr char32_t COMMENT_SYMBOL = U';';
-
-  static constexpr char32_t OPEN_SECTION_SYMBOL = U'[';
-
-  static constexpr char32_t CLOSE_SECTION_SYMBOL = U']';
-
-  static constexpr char32_t VALUE_DELIMITER_SYMBOL = U'=';
+  struct ParsingPolicy {
+    std::string m_comment;
+    std::string m_openedSection;
+    std::string m_closedSection;
+    std::string m_delimiter;
+  };
 
   /// Метод для парсинга ini-файла из считанного файла
   /// \param lines строки считанного файла
   /// \return заполненный объект ini-файла
-  [[nodiscard]] static ParsedIniFile Parse(const std::vector<std::string>& lines);
+  [[nodiscard]] static ParsedIniFile Parse(const std::filesystem::path& path,
+                                           const ParsingPolicy& policy);
 };
 
 }  // namespace codehub::utils

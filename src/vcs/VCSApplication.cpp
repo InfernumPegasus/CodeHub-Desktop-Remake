@@ -4,7 +4,6 @@
 #include "lib/inferlib/printer/Printer.h"
 #include "utils/config/ConfigBuilder.h"
 #include "utils/config/ConfigFilenames.h"
-#include "utils/filesystem/FilesystemUtils.h"
 #include "utils/parser/CommandLineParser.h"
 #include "utils/parser/IniConfigParser.h"
 #include "utils/status/Status.h"
@@ -20,8 +19,8 @@ using namespace inferlib;
 VCSApplication::VCSApplication(int argc, char** argv) : m_argc(argc), m_argv(argv) {
   m_command = CommandLineParser::Parse(m_argc, m_argv);
 
-  const auto readFile = ReadTextFile(GLOBAL_APP_CONFIG_PATH);
-  const auto parsedFile = IniConfigParser::Parse(readFile);
+  auto&& parsedFile =
+      IniConfigParser::Parse(GLOBAL_APP_CONFIG_PATH, {"#", "[", "]", "="});
   m_globalAppConfig = GlobalAppConfigBuilder::Build(parsedFile);
 }
 
