@@ -11,7 +11,7 @@ CommandExecutionStatus HelpCommand::ExecuteImpl(const ParsedCommand&) {
   using namespace inferlib;
   using namespace command;
 
-  constexpr size_t maxNameLength =
+  static constexpr size_t maxNameLength =
       std::max_element(
           COMMAND_DESCRIPTIONS.data.cbegin(), COMMAND_DESCRIPTIONS.data.cend(),
           [](const auto& a, const auto& b) { return a.first.size() < b.first.size(); })
