@@ -3,7 +3,7 @@ project(CodeHub)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Wno-maybe-uninitialized -O3")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Wno-maybe-uninitialized -O2")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
@@ -15,6 +15,7 @@ file(GLOB PARSER_SOURCES
 file(GLOB CONFIG_SOURCES "src/utils/config/*.cpp")
 file(GLOB COMMAND_SOURCES "src/command/*.cpp")
 file(GLOB FILESYSTEM_UTILS_SOURCES "src/utils/filesystem/FilesystemUtils.cpp")
+file(GLOB VCS_APPLICATION_SOURCES "src/vcs/VCSApplication.cpp")
 
 add_library(parser ${PARSER_SOURCES})
 add_library(command ${COMMAND_SOURCES})
@@ -28,7 +29,7 @@ target_include_directories(filesystem_utils PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_executable(
         ${PROJECT_NAME}
-        src/vcs/VCSApplication.cpp
+        ${VCS_APPLICATION_SOURCES}
         main.cpp
 )
 
