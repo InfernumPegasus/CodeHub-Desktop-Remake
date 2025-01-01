@@ -1,7 +1,5 @@
 #include "utils/parser/CommandLineParser.h"
 
-#include "command/ICommand.h"
-
 namespace codehub::utils {
 
 ParsedCommand CommandLineParser::Parse(int argc, char** argv) {
@@ -18,24 +16,24 @@ constexpr ArgsListView CommandLineParser::ArgvToStringViews(int argc, char** arg
   return {argv + 1, argv + argc - 1};
 }
 
-constexpr FlagsListView CommandLineParser::ExtractFlagsWithArgs(
+constexpr FlagsList CommandLineParser::ExtractFlagsWithArgs(
     const ArgsListView& rawArgs) {
-  FlagsListView flagsList;
+  FlagsList flagsList;
 
   for (const auto& arg : rawArgs) {
     if (arg.starts_with("--")) {
-      ParsedFlagView f;
+      ParsedFlag f;
 
       if (auto pos = arg.find('='); pos != std::string_view::npos) {
         const auto flag = arg.substr(0, pos);
         const auto value = arg.substr(pos + 1);
         f.m_shouldHaveValue = true;
-        f.m_keyValuePair = {flag, value.empty()
+        f.m_keyValuePair = {flag.data(), value.empty()
                                       ? std::nullopt
-                                      : std::make_optional<std::string_view>(value)};
+                                      : std::make_optional<std::string>(value)};
       } else {
         f.m_shouldHaveValue = false;
-        f.m_keyValuePair = {arg, std::nullopt};
+        f.m_keyValuePair = {arg.data(), std::nullopt};
       }
       flagsList.push_back(f);
     }

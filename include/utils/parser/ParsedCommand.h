@@ -8,7 +8,7 @@ namespace codehub::utils {
 /// и простыми аргументами
 struct ParsedCommand {
   std::string_view m_keyword;
-  FlagsListView m_flags;
+  FlagsList m_flags;
   ArgsListView m_args;
 };
 

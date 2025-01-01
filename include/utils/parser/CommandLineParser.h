@@ -35,7 +35,7 @@ struct CommandLineParser {
   /// Метод для извлечения флагов и их параметров (при их наличии)
   /// \param rawArgs массив аргументов командной строки
   /// \return массив флагов и их значений (при их наличии)
-  [[nodiscard]] static constexpr FlagsListView ExtractFlagsWithArgs(
+  [[nodiscard]] static constexpr FlagsList ExtractFlagsWithArgs(
       const ArgsListView& rawArgs);
 
   /// Метод для извлечения простых аргументов
