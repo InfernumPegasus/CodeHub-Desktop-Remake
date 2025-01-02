@@ -32,7 +32,7 @@ std::filesystem::path GetHomePath() {
   throw std::logic_error("HOME path cannot be determined");
 }
 
-std::vector<std::string> ReadTextFile(const std::filesystem::path& path) {
+TextFileLineVector ReadTextFileAsVector(const std::filesystem::path& path) {
   std::vector<std::string> res;
 
   std::ifstream ifs(path);

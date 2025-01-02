@@ -5,6 +5,9 @@
 
 namespace codehub::filesystem {
 
+using TextFileLine = std::string;
+using TextFileLineVector = std::vector<TextFileLine>;
+
 /// Проверка наличия элемента файловой системы
 /// \param path путь к проверяемому элементу
 /// \return истину, если элемент существует, иначе ложь
@@ -18,6 +21,7 @@ namespace codehub::filesystem {
 /// \param path путь к файлу
 /// \return std::vector с прочитанными строками из файла
 [[nodiscard]] std::vector<std::string> ReadTextFile(const std::filesystem::path& path);
+[[nodiscard]] TextFileLineVector ReadTextFileAsVector(const std::filesystem::path& path);
 
 /// Функция для создания файла
 /// \param path путь для создаваемого файла
