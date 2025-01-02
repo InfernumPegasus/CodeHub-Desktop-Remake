@@ -21,7 +21,7 @@ CommandExecutionStatus HelpCommand::ExecuteImpl(const ParsedCommand&) {
   for (const auto& [name, description] : COMMAND_DESCRIPTIONS.data) {
     Printer::Println(std::cout, name,
                      std::setw(static_cast<int>(maxNameLength - name.size() + 3)), " - ",
-                     description);
+                     description());
   }
 
   return CommandExecutionStatus::OK;

@@ -44,19 +44,21 @@ constexpr auto VERSION_DESCRIPTION  = "Version of software";
 constexpr auto BRANCH_DESCRIPTION   = "Create new branch";
 constexpr auto CHECKOUT_DESCRIPTION = "Change branch";
 
+using DescriptionLambdaType = const char* (*)();
+
 static constexpr auto COMMAND_DESCRIPTIONS =
-    inferlib::MakeConstexprMap<std::string_view, std::string_view>(
-        std::pair{HELP_COMMAND, HELP_DESCRIPTION},
-        std::pair{CONFIG_COMMAND, CONFIG_DESCRIPTION},
-        std::pair{INIT_COMMAND, INIT_DESCRIPTION},
-        std::pair{ADD_COMMAND, ADD_DESCRIPTION},
-        std::pair{COMMIT_COMMAND, COMMIT_DESCRIPTION},
-        std::pair{REVERT_COMMAND, REVERT_DESCRIPTION},
-        std::pair{LOG_COMMAND, LOG_DESCRIPTION},
-        std::pair{VERSION_COMMAND, VERSION_DESCRIPTION},
-        std::pair{BRANCH_COMMAND, BRANCH_DESCRIPTION},
-        std::pair{CHECKOUT_COMMAND, CHECKOUT_DESCRIPTION}
-);
+    inferlib::MakeConstexprMap<std::string_view, DescriptionLambdaType>(
+        std::pair{HELP_COMMAND, [](){ return HELP_DESCRIPTION; }},
+        std::pair{CONFIG_COMMAND, [](){ return CONFIG_DESCRIPTION; }},
+        std::pair{INIT_COMMAND, []() { return INIT_DESCRIPTION; }},
+        std::pair{ADD_COMMAND, []() { return ADD_DESCRIPTION; }},
+        std::pair{COMMIT_COMMAND, []() { return COMMIT_DESCRIPTION; }},
+        std::pair{REVERT_COMMAND, []() { return REVERT_DESCRIPTION; }},
+        std::pair{LOG_COMMAND, []() { return LOG_DESCRIPTION; }},
+        std::pair{VERSION_COMMAND, []() { return VERSION_DESCRIPTION; }},
+        std::pair{BRANCH_COMMAND, []() { return BRANCH_DESCRIPTION; }},
+        std::pair{CHECKOUT_COMMAND, []() { return CHECKOUT_DESCRIPTION; }}
+    );
 
 static constexpr auto GLOBAL_COMMAND_REGISTRY =
     inferlib::MakeConstexprMap<std::string_view, CommandVariant>(
