@@ -9,7 +9,7 @@ namespace codehub::utils {
 struct ParsedCommand {
   std::string_view m_keyword;
   FlagsList m_flags;
-  ArgsListView m_args;
+  StringViewVector m_args;
 };
 
-}
+}  // namespace codehub::utils

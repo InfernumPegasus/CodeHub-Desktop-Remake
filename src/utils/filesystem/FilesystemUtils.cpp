@@ -32,7 +32,7 @@ std::filesystem::path GetHomePath() {
   throw std::logic_error("HOME path cannot be determined");
 }
 
-TextFileLineVector ReadTextFileAsVector(const std::filesystem::path& path) {
+StringVector ReadTextFileAsVector(const std::filesystem::path& path) {
   std::vector<std::string> res;
 
   std::ifstream ifs(path);
@@ -46,13 +46,13 @@ TextFileLineVector ReadTextFileAsVector(const std::filesystem::path& path) {
   return res;
 }
 
-TextFileLine ReadTextFileAsString(const std::filesystem::path& path) {
+String ReadTextFileAsString(const std::filesystem::path& path) {
   std::ifstream ifs(path);
   if (!ifs) {
     return {};
   }
-  return {std::istreambuf_iterator<TextFileLine::value_type>(ifs),
-          std::istreambuf_iterator<TextFileLine::value_type>()};
+  return {std::istreambuf_iterator<String::value_type>(ifs),
+          std::istreambuf_iterator<String::value_type>()};
 }
 
 bool CreateFile(const std::filesystem::path& path) {

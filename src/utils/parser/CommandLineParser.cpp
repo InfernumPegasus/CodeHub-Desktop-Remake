@@ -11,13 +11,13 @@ ParsedCommand CommandLineParser::Parse(int argc, char** argv) {
   return {keyword, flagsWithArgs, simpleArgs};
 }
 
-constexpr ArgsListView CommandLineParser::ArgvToStringViews(int argc, char** argv) {
+constexpr StringViewVector CommandLineParser::ArgvToStringViews(int argc, char** argv) {
   if (argc < 2) return {};
   return {argv + 1, argv + argc - 1};
 }
 
 constexpr FlagsList CommandLineParser::ExtractFlagsWithArgs(
-    const ArgsListView& rawArgs) {
+    const StringViewVector& rawArgs) {
   FlagsList flagsList;
 
   for (const auto& arg : rawArgs) {
@@ -29,8 +29,8 @@ constexpr FlagsList CommandLineParser::ExtractFlagsWithArgs(
         const auto value = arg.substr(pos + 1);
         f.m_shouldHaveValue = true;
         f.m_keyValuePair = {flag.data(), value.empty()
-                                      ? std::nullopt
-                                      : std::make_optional<std::string>(value)};
+                                             ? std::nullopt
+                                             : std::make_optional<std::string>(value)};
       } else {
         f.m_shouldHaveValue = false;
         f.m_keyValuePair = {arg.data(), std::nullopt};
@@ -42,8 +42,9 @@ constexpr FlagsList CommandLineParser::ExtractFlagsWithArgs(
   return flagsList;
 }
 
-constexpr ArgsListView CommandLineParser::ExtractSimpleArgs(const ArgsListView& rawArgs) {
-  ArgsListView simpleArgs;
+constexpr StringViewVector CommandLineParser::ExtractSimpleArgs(
+    const StringViewVector& rawArgs) {
+  StringViewVector simpleArgs;
   if (rawArgs.size() >= 2) {
     for (size_t i = 1; i < rawArgs.size(); i++) {
       if (!rawArgs[i].starts_with("--")) {

@@ -16,7 +16,6 @@ namespace codehub::utils {
  * простые аргументы        - ./, just_a_param
  */
 struct CommandLineParser {
-
   /// Метод для парсинга командной строки в готовый к использованию объект
   /// \param argc количество аргументов командной строки
   /// \param argv массив аргументов командной строки
@@ -24,25 +23,25 @@ struct CommandLineParser {
   [[nodiscard]] static ParsedCommand Parse(int argc, char* argv[]);
 
  private:
-
   /// Метод для создания списка невладеющих строк из аргументов командной строки
   /// \param argc количество аргументов командной строки
   /// \param argv массив аргументов командной строки
   /// \return массив аргументов [*argv + 1; *argv + argc - 1], если argc >= 2,
   /// иначе пустой массив
-  [[nodiscard]] static constexpr ArgsListView ArgvToStringViews(int argc, char* argv[]);
+  [[nodiscard]] static constexpr StringViewVector ArgvToStringViews(int argc,
+                                                                    char* argv[]);
 
   /// Метод для извлечения флагов и их параметров (при их наличии)
   /// \param rawArgs массив аргументов командной строки
   /// \return массив флагов и их значений (при их наличии)
   [[nodiscard]] static constexpr FlagsList ExtractFlagsWithArgs(
-      const ArgsListView& rawArgs);
+      const StringViewVector& rawArgs);
 
   /// Метод для извлечения простых аргументов
   /// \param rawArgs массив аргументов командной строки
   /// \return массив простых аргументов
-  [[nodiscard]] static constexpr ArgsListView ExtractSimpleArgs(
-      const ArgsListView& rawArgs);
+  [[nodiscard]] static constexpr StringViewVector ExtractSimpleArgs(
+      const StringViewVector& rawArgs);
 };
 
 }  // namespace codehub::utils

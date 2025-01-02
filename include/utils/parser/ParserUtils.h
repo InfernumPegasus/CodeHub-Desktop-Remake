@@ -13,7 +13,7 @@ namespace codehub::utils {
 
 struct ParsedFlag;
 
-using ArgsListView = std::vector<std::string_view>;
+using StringViewVector = std::vector<std::string_view>;
 
 using KeyOptValuePair = std::pair<std::string, std::optional<std::string>>;
 using FlagsList = std::vector<ParsedFlag>;
