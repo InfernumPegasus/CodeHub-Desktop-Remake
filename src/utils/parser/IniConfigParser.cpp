@@ -3,11 +3,17 @@
 #include <algorithm>
 #include <fstream>
 
+#include "utils/filesystem/FilesystemUtils.h"
+
 namespace codehub::utils {
 
-ParsedIniFile IniConfigParser::Parse(const std::vector<std::string>& lines) {
+ParsedIniFile IniConfigParser::Parse(const std::filesystem::path& path) {
+  using namespace filesystem;
+
   IniSectionFlagsMap iniMap;
   std::string currentSection;
+
+  const auto lines = ReadTextFileAsVector(path);
 
   for (const auto& line : lines) {
     if (line.empty() || line.front() == COMMENT_SYMBOL) {

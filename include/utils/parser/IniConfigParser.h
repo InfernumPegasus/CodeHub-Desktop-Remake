@@ -21,7 +21,7 @@ struct IniConfigParser {
   /// Метод для парсинга ini-файла из считанного файла
   /// \param lines строки считанного файла
   /// \return заполненный объект ini-файла
-  [[nodiscard]] static ParsedIniFile Parse(const std::vector<std::string>& lines);
+  [[nodiscard]] static ParsedIniFile Parse(const std::filesystem::path& path);
 };
 
 }  // namespace codehub::utils
