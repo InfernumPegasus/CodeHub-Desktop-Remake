@@ -46,6 +46,15 @@ TextFileLineVector ReadTextFileAsVector(const std::filesystem::path& path) {
   return res;
 }
 
+TextFileLine ReadTextFileAsString(const std::filesystem::path& path) {
+  std::ifstream ifs(path);
+  if (!ifs) {
+    return {};
+  }
+  return {std::istreambuf_iterator<TextFileLine::value_type>(ifs),
+          std::istreambuf_iterator<TextFileLine::value_type>()};
+}
+
 bool CreateFile(const std::filesystem::path& path) {
   std::ofstream ofs(path);
   return ofs.is_open();

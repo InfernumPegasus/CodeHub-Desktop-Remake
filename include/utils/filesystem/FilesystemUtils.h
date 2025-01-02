@@ -20,8 +20,12 @@ using TextFileLineVector = std::vector<TextFileLine>;
 /// Функция для прочтения текстового файла
 /// \param path путь к файлу
 /// \return std::vector с прочитанными строками из файла
-[[nodiscard]] std::vector<std::string> ReadTextFile(const std::filesystem::path& path);
 [[nodiscard]] TextFileLineVector ReadTextFileAsVector(const std::filesystem::path& path);
+
+/// Функция для прочтения файла в виде строки
+/// \param path путь к файлу
+/// \return строка с содержимым файла
+[[nodiscard]] TextFileLine ReadTextFileAsString(const std::filesystem::path& path);
 
 /// Функция для создания файла
 /// \param path путь для создаваемого файла
