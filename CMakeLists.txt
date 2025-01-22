@@ -3,7 +3,37 @@ project(CodeHub)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Wno-maybe-uninitialized -O2")
+
+if (CMAKE_CXX_COMPILER_ID MATCHES GNU)
+    add_compile_options(-W)
+    add_compile_options(-Wall)
+    add_compile_options(-Wextra)
+    add_compile_options(-Wpedantic)
+#    add_compile_options(-Werror)
+
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_compile_options(-O0)
+        add_compile_options(-g3)
+        add_compile_options(-fsanitize=address)
+        add_link_options(-fsanitize=address)
+        add_compile_options(-fsanitize=undefined)
+        add_link_options(-fsanitize=undefined)
+    endif ()
+
+    if (CMAKE_BUILD_TYPE STREQUAL "Release")
+        add_compile_options(-O2)
+        add_compile_options(-g3)
+    endif ()
+endif ()
+
+if (CMAKE_CXX_COMPILER_ID MATCHES MSVC)
+    add_compile_options(/W3)
+    if (CMAKE_BUILD_TYPE STREQUAL "Release")
+        add_compile_options(/0t)
+    else ()
+        add_compile_options(/Zi)
+    endif ()
+endif ()
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
